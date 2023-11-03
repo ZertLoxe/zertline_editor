@@ -5,26 +5,18 @@
 </head>
 <body>
     <h1>Dropbox Access Token Generator</h1>
-    <p>Your Dropbox access token:</p>
-    <p id="accessToken" style="display: none;"></p>
+    <p>Click the button to generate a Dropbox access token:</p>
+    <button id="generateToken">Generate Token</button>
 
     <script>
         // Replace with your Dropbox app's client ID and redirect URI
         const clientId = 'hs2pnr348r68qex';
         const redirectUri = 'https://zertloxe.github.io/zertline_editor/index.html';
 
-        // Check if the URL contains an access token
-        const url = new URL(window.location.href);
-        const accessToken = url.searchParams.get('access_token');
-
-        if (accessToken) {
-            document.getElementById('accessToken').textContent = `Access Token: ${accessToken}`;
-            document.getElementById('accessToken').style.display = 'block';
-        } else {
-            // If no access token is present, redirect to Dropbox for authorization
+        document.getElementById('generateToken').addEventListener('click', () => {
             const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}`;
             window.location.href = authUrl;
-        }
+        });
     </script>
 </body>
 </html>
