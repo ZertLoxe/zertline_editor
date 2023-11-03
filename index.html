@@ -14,7 +14,7 @@
         const clientId = 'hs2pnr348r68qex';
         const redirectUri = 'https://zertloxe.github.io/zertline_editor/index.html';
 
-        const url = new window.location.href;
+        const url = window.location.href;
         const hash = url.hash;
         const accessTokenwrong = hash.split('=')[1];
         const accessToken = accessTokenwrong.replace("&token_type", '');
