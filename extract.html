@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dropbox Access Token Extractor</title>
+</head>
+<body>
+    <h1>Dropbox Access Token Extractor</h1>
+    <p>Enter the URL of the generator page:</p>
+    <input type="text" id="generatorUrl">
+    <button id="extractToken">Extract Token</button>
+    <p id="accessToken" style="display: none;"></p>
+
+    <script>
+        const url = new URL('https://zertloxe.github.io/zertline_editor/index.html#access_token=sl.BpLnYYOCFf_NWghpTURuj5MXzfOqYUJOZI2EfbrwKODCTi2Ta3X8qckiiH3ScPoV5k5BLbeYO2W_VIYnI0LiWyeMViKwQaPNCFuZbotD9-PQjN0o-mJ8SUyhrCHWiHhAeBDkZpYSOktJ&token_type=bearer&expires_in=14400&scope=account_info.read+files.content.read+files.content.write+files.metadata.read+files.metadata.write&uid=970356595&account_id=dbid%3AAADpY5eFEQmDpfvIyc23owPZaD2ffxjW_u0');
+        const hash = url.hash;
+        const accessTokenwrong = hash.split('=')[1];
+        const accessToken = accessTokenwrong.replace("&token_type", '');
+        console.log(accessTokenwrong);
+        console.log(accessToken);
+    </script>
+</body>
+</html>
+
+
+
+
+
