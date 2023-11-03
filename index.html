@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dropbox Access Token Generator</title>
+</head>
+<body>
+    <h1>Dropbox Access Token Generator</h1>
+    <button id="authorize">Authorize with Dropbox</button>
+    <div id="accessTokenContainer" style="display: none;">
+        <h2>Access Token:</h2>
+        <p id="accessToken"></p>
+    </div>
+
+    <script>
+        const clientId = 'hs2pnr348r68qex';
+        const redirectUri = 'https://zertloxe.github.io/zertline_editor/index.html';
+
+        document.getElementById('authorize').addEventListener('click', () => {
+            const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}`;
+            window.location.href = authUrl;
+        });
+
+        window.addEventListener('hashchange', () => {
+            const accessTokenMatch = window.location.hash.match(/access_token=([^&]*)/);
+            if (accessTokenMatch) {
+                const accessToken = accessTokenMatch[1];
+                document.getElementById('accessToken').textContent = accessToken;
+                document.getElementById('accessTokenContainer').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
