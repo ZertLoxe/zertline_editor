@@ -16,7 +16,7 @@
         const redirectUri = 'https://zertloxe.github.io/zertline_editor/index.html';
 
         document.getElementById('extractToken').addEventListener('click', () => {
-            const url = URL(window.location.href);
+            const url = new URL(window.location.href);
             console.log(url);
             const hash = url.hash;
             const accessTokenwrong = hash.split('=')[1];
