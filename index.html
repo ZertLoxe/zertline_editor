@@ -23,7 +23,40 @@
             const accessToken = accessTokenwrong.replace("&token_type", '');
             console.log(accessTokenwrong);
             console.log(accessToken);
-        });
+
+            loadAndEditJson()
+
+            async function loadAndEditJson() {
+            try {
+                const response = await fetch('https://zertloxe.github.io/zertline_editor/index.json'); // Replace with the URL of the external JSON file
+                if (!response.ok) {
+                    throw new Error('Failed to fetch JSON data');
+                }
+
+                const jsonData = await response.json();
+
+                // Modify the JSON data as needed
+                jsonData.token = accessToken;
+
+                // Send the modified JSON data back to the external source (if supported)
+                const saveResponse = await fetch('https://zertloxe.github.io/zertline_editor', {
+                    method: 'PUT', // Use the appropriate HTTP method (PUT, POST, etc.)
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(jsonData),
+                });
+
+                if (saveResponse.ok) {
+                    alert('JSON data saved successfully.');
+                } else {
+                    alert('Error saving JSON data.');
+                }
+            } catch (error) {
+                console.error('An error occurred:', error);
+                alert('Failed to load and edit JSON data.');
+            }
+        }});
         
         document.getElementById('generateToken').addEventListener('click', () => {
             const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}`;
