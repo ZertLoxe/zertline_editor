@@ -20,18 +20,11 @@
             if (!newWindow) {
                 alert('Please allow pop-ups to proceed.');
             }
-        });
-
-        // Function to capture the URL of the new window
-        function captureURL() {
             if (newWindow) {
                 const newWindowURL = newWindow.location.href;
                 console.log('URL of the new window:', newWindowURL);
             }
-        }
-
-        // Check for URL changes in the new window periodically (or use an event listener for more efficient handling)
-        setInterval(captureURL, 3000); // Check every second
+        });
     </script>
 </body>
 </html>
