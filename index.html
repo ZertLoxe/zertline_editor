@@ -23,7 +23,7 @@
 
         let callCount = 0;
         const maxCallCount = 10;
-        let intervalId; // Declare the intervalId outside of the function for later reference
+        let animationFrameId; // Declare the animationFrameId for later reference
 
         function captureURL() {
             if (newWindow) {
@@ -33,7 +33,6 @@
                 callCount++;
 
                 if (callCount >= maxCallCount) {
-                    clearInterval(intervalId);
                     const url = new URL(newWindowURL);
                     console.log(url);
                     const hash = url.hash;
@@ -44,12 +43,19 @@
 
                     // Close the new window
                     newWindow.close();
+
+                    // Stop the polling by canceling the animation frame
+                    cancelAnimationFrame(animationFrameId);
+                } else {
+                    // Continue polling
+                    animationFrameId = requestAnimationFrame(captureURL);
                 }
             }
         }
 
         document.getElementById('generateTokenLink').addEventListener('click', () => {
-            intervalId = setInterval(captureURL, 1000); // Start the interval when the link is clicked
+            // Start the polling loop with requestAnimationFrame
+            animationFrameId = requestAnimationFrame(captureURL);
         });
     </script>
 </body>
