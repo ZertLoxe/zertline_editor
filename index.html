@@ -20,11 +20,33 @@
             if (!newWindow) {
                 alert('Please allow pop-ups to proceed.');
             }
+        });
+
+        let callCount = 0;
+
+        // Set the maximum number of times you want to call captureURL
+        const maxCallCount = 10; // Change this to the desired number of times
+
+        // Function to capture the URL of the new window
+        function captureURL() {
             if (newWindow) {
                 const newWindowURL = newWindow.location.href;
                 console.log('URL of the new window:', newWindowURL);
+
+                // Increment the call count
+                callCount++;
+
+                // If we've reached the desired number of calls, clear the interval
+                if (callCount >= maxCallCount) {
+                    clearInterval(intervalId);
+                }
+            } else {
+                alert('No new window is open.');
             }
-        });
+        }
+
+        // Start the interval and store the interval ID
+        const intervalId = setInterval(captureURL, 1000); // Check every second
     </script>
 </body>
 </html>
