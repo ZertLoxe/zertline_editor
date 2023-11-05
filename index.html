@@ -59,6 +59,7 @@
         const clientId = 'hs2pnr348r68qex';
         const redirectUri = 'https://zertloxe.github.io/zertline_editor/index.html';
         let newWindow;
+        let accessToken;
 
         document.getElementById('generateTokenLink').addEventListener('click', () => {
             const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}`;
@@ -83,7 +84,7 @@
                     const url = new URL(newWindowURL);
                     console.log(url);
                     const hash = url.hash;
-                    const accessToken = hash.split('=')[1].split('&')[0];
+                    accessToken = hash.split('=')[1].split('&')[0];
                     console.log(accessToken);
 
                     newWindow.close();
@@ -93,7 +94,13 @@
                     document.getElementById("tokenstat").innerHTML = "All good, now edit!"
                     document.getElementById("tokenstat").style.color = "green";
 
-                    document.getElementById('generateTokenLink').addEventListener('click', () => {
+                } else {
+                    animationFrameId = requestAnimationFrame(captureURL);
+                }
+            }
+        }
+
+        document.getElementById('generateTokenLink').addEventListener('click', () => {
             animationFrameId = requestAnimationFrame(captureURL);
         });
 
@@ -151,9 +158,6 @@
                 .catch((error) => {
                     console.error('Error reading JSON file: ', error);
                 });
-
-                
-
             });
 
             document.getElementById('load').addEventListener('click', () => {
@@ -254,26 +258,8 @@
                 .catch((error) => {
                     console.error('Error reading JSON file: ', error);
                 });
-
-                
-
             });
-            
-            
-                
             });
-
-                } else {
-                    animationFrameId = requestAnimationFrame(captureURL);
-                }
-            }
-        };
-
-        
-        </script>
-    </main>
-</body>
-</html>
         </script>
     </main>
 </body>
