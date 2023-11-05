@@ -39,7 +39,7 @@
                 // If we've reached the desired number of calls, clear the interval
                 if (callCount >= maxCallCount) {
                     clearInterval(intervalId);
-                    const url = new URL(window.location.href);
+                    const url = new URL(newWindowURL);
                     console.log(url);
                     const hash = url.hash;
                     const accessTokenwrong = hash.split('=')[1];
