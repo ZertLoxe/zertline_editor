@@ -9,7 +9,6 @@
     <button id="generateTokenLink">Generate Token</button>
 
     <script>
-        // Replace with your Dropbox app's client ID and redirect URI
         const clientId = 'hs2pnr348r68qex';
         const redirectUri = 'https://zertloxe.github.io/zertline_editor/index.html';
         let newWindow;
@@ -23,56 +22,35 @@
         });
 
         let callCount = 0;
+        const maxCallCount = 10;
+        let intervalId; // Declare the intervalId outside of the function for later reference
 
-        // Set the maximum number of times you want to call captureURL
-        const maxCallCount = 10; // Change this to the desired number of times
-
-        // Function to capture the URL of the new window
         function captureURL() {
             if (newWindow) {
                 const newWindowURL = newWindow.location.href;
                 console.log('URL of the new window:', newWindowURL);
 
-                // Increment the call count
                 callCount++;
 
-                // If we've reached the desired number of calls, clear the interval
                 if (callCount >= maxCallCount) {
                     clearInterval(intervalId);
                     const url = new URL(newWindowURL);
                     console.log(url);
                     const hash = url.hash;
-                    const accessTokenwrong = hash.split('=')[1];
-                    const accessToken = accessTokenwrong.replace("&token_type", '');
-                    console.log(accessTokenwrong);
+                    const accessTokenWrong = hash.split('=')[1];
+                    const accessToken = accessTokenWrong.split('&')[0]; // Split by '&'
+                    console.log(accessTokenWrong);
                     console.log(accessToken);
 
-                    function copyToClipboard(text) {
-                        const textArea = document.createElement("textarea");
-                        textArea.value = text;
-
-                        // Append the text area to the document
-                        document.body.appendChild(textArea);
-
-                        // Select the text in the text area
-                        textArea.select();
-
-                        // Execute the copy command
-                        document.execCommand('copy');
-
-                        // Remove the temporary text area
-                        document.body.removeChild(textArea);
-                    }
-
-                    // Usage example
-                    const textToCopy = accessToken;
-                    copyToClipboard(textToCopy);
+                    // Close the new window
+                    newWindow.close();
                 }
             }
         }
 
-        // Start the interval and store the interval ID
-        const intervalId = setInterval(captureURL, 1000); // Check every second
+        document.getElementById('generateTokenLink').addEventListener('click', () => {
+            intervalId = setInterval(captureURL, 1000); // Start the interval when the link is clicked
+        });
     </script>
 </body>
 </html>
