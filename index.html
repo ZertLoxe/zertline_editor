@@ -37,7 +37,7 @@ async function updateGitHubJson() {
                 // Decode and modify the JSON data
                 const decodedContent = atob(content);
                 const jsonData = JSON.parse(decodedContent);
-                jsonData.token = accessToken;
+                jsonData.token = accessToken; // Replace 'new_access_token' with the new token value you want to set
 
                 // Update the JSON file with the modified data
                 const updatedContent = JSON.stringify(jsonData, null, 4);
