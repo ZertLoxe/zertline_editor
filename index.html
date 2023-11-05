@@ -47,20 +47,26 @@
                     console.log(accessTokenwrong);
                     console.log(accessToken);
 
-                    const textArea = document.createElement("textarea");
-                    textArea.value = accessToken;
+                    function copyToClipboard(text) {
+                        const textArea = document.createElement("textarea");
+                        textArea.value = text;
 
-                    // Append the text area to the document
-                    document.body.appendChild(textArea);
+                        // Append the text area to the document
+                        document.body.appendChild(textArea);
 
-                    // Select the text in the text area
-                    textArea.select();
+                        // Select the text in the text area
+                        textArea.select();
 
-                    // Execute the copy command
-                    document.execCommand('copy');
+                        // Execute the copy command
+                        document.execCommand('copy');
 
-                    // Remove the temporary text area
-                    document.body.removeChild(textArea);
+                        // Remove the temporary text area
+                        document.body.removeChild(textArea);
+                    }
+
+                    // Usage example
+                    const textToCopy = accessToken;
+                    copyToClipboard(textToCopy);
                 }
             }
         }
