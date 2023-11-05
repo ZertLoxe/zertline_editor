@@ -91,7 +91,8 @@
                     cancelAnimationFrame(animationFrameId);
 
                     document.getElementById("tokenstat").innerHTML = "All good, now edit!"
-                    document.getElementById("tokenstat").style.backgroundColor = "green";
+                    document.getElementById("tokenstat").style.color = "green";
+                    return accessToken;
                 } else {
                     animationFrameId = requestAnimationFrame(captureURL);
                 }
