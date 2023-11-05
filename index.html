@@ -92,14 +92,8 @@
 
                     document.getElementById("tokenstat").innerHTML = "All good, now edit!"
                     document.getElementById("tokenstat").style.color = "green";
-                    return accessToken;
-                } else {
-                    animationFrameId = requestAnimationFrame(captureURL);
-                }
-            }
-        }
 
-        document.getElementById('generateTokenLink').addEventListener('click', () => {
+                    document.getElementById('generateTokenLink').addEventListener('click', () => {
             animationFrameId = requestAnimationFrame(captureURL);
         });
 
@@ -268,6 +262,18 @@
             
                 
             });
+
+                } else {
+                    animationFrameId = requestAnimationFrame(captureURL);
+                }
+            }
+        };
+
+        
+        </script>
+    </main>
+</body>
+</html>
         </script>
     </main>
 </body>
