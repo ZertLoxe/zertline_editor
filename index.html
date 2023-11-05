@@ -11,11 +11,15 @@
     <p id="accessToken"></p>
 
     <script>
-        // Replace with your Dropbox app's client ID and redirect URI
         const clientId = 'hs2pnr348r68qex';
         const redirectUri = 'https://zertloxe.github.io/zertline_editor/index.html';
 
         function generateTokenlink() {
+            const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}`;
+            window.location.href = authUrl;
+        };
+        
+        function extractTokenlink() {
             const url = new URL(window.location.href);
             console.log(url);
             const hash = url.hash;
@@ -23,11 +27,6 @@
             const accessToken = accessTokenwrong.replace("&token_type", '');
             console.log(accessTokenwrong);
             console.log(accessToken);
-        };
-        
-        function extractTokenlink() {
-            const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}`;
-            window.location.href = authUrl;
         };
     </script>
 </body>
