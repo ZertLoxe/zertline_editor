@@ -14,48 +14,18 @@
         let newWindow;
 
         document.getElementById('generateTokenLink').addEventListener('click', () => {
-            const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}`;
-            newWindow = window.open(authUrl, '_blank');
+            newWindow = window.open('', '_blank');
             if (!newWindow) {
                 alert('Please allow pop-ups to proceed.');
-            }
-        });
-
-        let callCount = 0;
-        const maxCallCount = 10;
-        let animationFrameId; // Declare the animationFrameId for later reference
-
-        function captureURL() {
-            if (newWindow) {
-                const newWindowURL = newWindow.location.href;
-                console.log('URL of the new window:', newWindowURL);
-
-                callCount++;
-
-                if (callCount >= maxCallCount) {
-                    const url = new URL(newWindowURL);
-                    console.log(url);
-                    const hash = url.hash;
-                    const accessTokenWrong = hash.split('=')[1];
-                    const accessToken = accessTokenWrong.split('&')[0]; // Split by '&'
-                    console.log(accessTokenWrong);
-                    console.log(accessToken);
-
-                    // Close the new window
+            } else {
+                // Modify the content of the new window
+                newWindow.document.write('<h2>New Window Content</h2>');
+                newWindow.document.write('<p>This is the content of the new window.</p>');
+                newWindow.document.write('<button id="closeWindow">Close Window</button>');
+                newWindow.document.getElementById('closeWindow').addEventListener('click', () => {
                     newWindow.close();
-
-                    // Stop the polling by canceling the animation frame
-                    cancelAnimationFrame(animationFrameId);
-                } else {
-                    // Continue polling
-                    animationFrameId = requestAnimationFrame(captureURL);
-                }
+                });
             }
-        }
-
-        document.getElementById('generateTokenLink').addEventListener('click', () => {
-            // Start the polling loop with requestAnimationFrame
-            animationFrameId = requestAnimationFrame(captureURL);
         });
     </script>
 </body>
