@@ -19,12 +19,21 @@
         <div>
             <button id="generateTokenLink">Generate Token</button>
             <p id="tokenstat" style="color: red;font-size: x-large;font-weight: bold;">Not ready</p>
-            <p>title</p>
+            <p>Title</p>
             <input type="text" id="title">
-            <p>content</p>
+            <p>Content</p>
             <textarea id="content" cols="50" rows="10"></textarea>
-            <p>link</p>
+            <p>Link</p>
             <input type="text" id="link">
+            <div>
+                <p>Media</p>
+                <button id="addMedia">Add</button>
+                <button id="removeMedia">Remove</button>
+                <br>
+                <p id="showMediaArray"></p>
+                <br>
+                <input type="text" id="media" size="100">
+            </div>
             <div>
                 <p>source</p>
 
@@ -47,219 +56,233 @@
             <button type="button" id="load">load</button>
             <button type="button" id="submit">Submit</button>
 
-            <p>remove news</p>
+            <p>Remove News</p>
             <input type="number" id="remove-id">
-            <button type="button" id="remove">remove</button>
+            <button type="button" id="remove">Remove</button>
 
             <div id="jsonData"></div>
         </div>
         
         <script>
 
-        const clientId = 'hs2pnr348r68qex';
-        const redirectUri = 'https://zertloxe.github.io/zertline_editor/index.html';
-        let newWindow;
-        let accessToken;
+            let mediaArray = [];
 
-        document.getElementById('generateTokenLink').addEventListener('click', () => {
-            const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}`;
-            newWindow = window.open(authUrl, '_blank');
-            if (!newWindow) {
-                alert('Please allow pop-ups to proceed.');
-            }
-        });
+            document.getElementById('addMedia').addEventListener('click', () => {
+                mediaArray.push(document.getElementById('media').value);
+                document.getElementById("media").value = '';
+                document.getElementById("showMediaArray").innerHTML = mediaArray;
+            });
 
-        let callCount = 0;
-        const maxCallCount = 10;
-        let animationFrameId;
+            document.getElementById('removeMedia').addEventListener('click', () => {
+                mediaArray.pop();
+                document.getElementById("showMediaArray").innerHTML = mediaArray;
+            });
 
-        function captureURL() {
-            if (newWindow) {
-                const newWindowURL = newWindow.location.href;
-                console.log('URL of the new window:', newWindowURL);
+            const clientId = 'hs2pnr348r68qex';
+            const redirectUri = 'https://zertloxe.github.io/zertline_editor/index.html';
+            let newWindow;
+            let accessToken;
 
-                callCount++;
+            document.getElementById('generateTokenLink').addEventListener('click', () => {
+                const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}`;
+                newWindow = window.open(authUrl, '_blank');
+                if (!newWindow) {
+                    alert('Please allow pop-ups to proceed.');
+                }
+            });
 
-                if (callCount >= maxCallCount) {
-                    const url = new URL(newWindowURL);
-                    console.log(url);
-                    const hash = url.hash;
-                    accessToken = hash.split('=')[1].split('&')[0];
-                    console.log(accessToken);
+            let callCount = 0;
+            const maxCallCount = 10;
+            let animationFrameId;
 
-                    newWindow.close();
+            function captureURL() {
+                if (newWindow) {
+                    const newWindowURL = newWindow.location.href;
+                    console.log('URL of the new window:', newWindowURL);
 
-                    cancelAnimationFrame(animationFrameId);
+                    callCount++;
 
-                    document.getElementById("tokenstat").innerHTML = "All good, now edit!"
-                    document.getElementById("tokenstat").style.color = "green";
+                    if (callCount >= maxCallCount) {
+                        const url = new URL(newWindowURL);
+                        console.log(url);
+                        const hash = url.hash;
+                        accessToken = hash.split('=')[1].split('&')[0];
+                        console.log(accessToken);
 
-                } else {
-                    animationFrameId = requestAnimationFrame(captureURL);
+                        newWindow.close();
+
+                        cancelAnimationFrame(animationFrameId);
+
+                        document.getElementById("tokenstat").innerHTML = "All good, now edit!"
+                        document.getElementById("tokenstat").style.color = "green";
+
+                    } else {
+                        animationFrameId = requestAnimationFrame(captureURL);
+                    }
                 }
             }
-        }
 
-        document.getElementById('generateTokenLink').addEventListener('click', () => {
-            animationFrameId = requestAnimationFrame(captureURL);
-        });
+            document.getElementById('generateTokenLink').addEventListener('click', () => {
+                animationFrameId = requestAnimationFrame(captureURL);
+            });
 
-            const targetTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                const targetTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-            document.getElementById('remove').addEventListener('click', () => {
+                document.getElementById('remove').addEventListener('click', () => {
+                    
+                    const apiBaseUrl = 'https://content.dropboxapi.com/2/files';
+
+                    const filePath = "/news.json";
+
+                    fetch(`${apiBaseUrl}/download`, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Dropbox-API-Arg': JSON.stringify({
+                        path: filePath,
+                        }),
+                    },
+                    })
+                    .then((response) => response.text())
+                    .then((data) => {
+                        const jsonData = JSON.parse(data);
+                        const numId = document.getElementById('remove-id').value;
+                        console.log(numId);
+                        console.log(jsonData);
+
+                        newjsonData = jsonData.splice(numId, 1);
+                        for (let i = 0; i < jsonData.length - parseInt(numId); i++) {
+
+                        jsonData[i + parseInt(numId)].id -= 1;
+                        };
+                        console.log(newjsonData);
+
+                        fetch(`${apiBaseUrl}/upload`, {
+                        method: 'POST',
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                            'Content-Type': 'application/octet-stream',
+                            'Dropbox-API-Arg': JSON.stringify({
+                            path: filePath,
+                            mode: { '.tag': 'overwrite' },
+                            }),
+                        },
+                        body: JSON.stringify(jsonData),
+                        })
+                        .then(() => {
+                            console.log('Object appended and saved.');
+                        })
+                        .catch((error) => {
+                            console.error('Error saving JSON: ', error);
+                        });
+
+                    })
+                    .catch((error) => {
+                        console.error('Error reading JSON file: ', error);
+                    });
+                });
+
+                document.getElementById('load').addEventListener('click', () => {
                 
-                const apiBaseUrl = 'https://content.dropboxapi.com/2/files';
+                const sharedLink = "https://www.dropbox.com/scl/fi/gco4rzf3v2uqrq9fr9x2r/news.json?rlkey=cnis2k7k60gntdwydkjpcf0r5&dl=0";
 
-                const filePath = "/news.json";
+                const directLink = sharedLink.replace("www.dropbox.com", "dl.dropboxusercontent.com");
+                
+                fetch(directLink)
+                .then(news => news.json())
+                .then((news) => {
+                let out = "";
+                for (var i = news.length - 1; i >= 0; i--) {
+                    out += "<div id='news-container'>" + 
+                    "<div id='news-source-icon'>" +
+                    "<h1 id='news-source'>" + news[i].source + 
+                    "<div style='color: red'>id:" + news[i].id + 
+                    "</div><div style='color: green'>" + moment(news[i].time).tz(targetTimeZone).format('(MMM-D-YYYY) (h:mm a)') + "</div></h1>" +
+                    "</div>" +
+                    "<div id='news-part'>" +
+                    "<h2 id='news-title'>" + news[i].title + "</h2>" +
+                    "<p id='news-content'>" + news[i].content + "</p>" +
+                    "<a id='news-link' href='" + news[i].link + "' target='_blank'>" + news[i].link + "</a>" +
+                    "</div>" +
+                    "</div>" +
+                    "<br>";
+                }
+                document.getElementById("jsonData").innerHTML =  out;
+                });
+                });
 
-                fetch(`${apiBaseUrl}/download`, {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    'Dropbox-API-Arg': JSON.stringify({
-                    path: filePath,
-                    }),
-                },
-                })
-                .then((response) => response.text())
-                .then((data) => {
-                    const jsonData = JSON.parse(data);
-                    const numId = document.getElementById('remove-id').value;
-                    console.log(numId);
-                    console.log(jsonData);
+                document.getElementById('submit').addEventListener('click', () => {
 
-                    newjsonData = jsonData.splice(numId, 1);
-                    for (let i = 0; i < jsonData.length - parseInt(numId); i++) {
+                const title = document.getElementById('title').value;
+                const content = document.getElementById('content').value;
+                const link = document.getElementById('link').value;
+                const source = document.querySelector('input[name="source"]:checked').value;
+                const currentTime = moment().format();
 
-                    jsonData[i + parseInt(numId)].id -= 1;
-                    };
-                    console.log(newjsonData);
+                const sharedLink = "https://www.dropbox.com/scl/fi/gco4rzf3v2uqrq9fr9x2r/news.json?rlkey=cnis2k7k60gntdwydkjpcf0r5&dl=0";
 
-                    fetch(`${apiBaseUrl}/upload`, {
+                const directLink = sharedLink.replace("www.dropbox.com", "dl.dropboxusercontent.com");
+
+                fetch(directLink)
+                .then(news => news.json())
+                .then((news) => {
+                    const output = {
+                        "id": news.length,
+                        "time":currentTime,
+                        "source": source,
+                        "title": title,
+                        "content": content,
+                        "media":mediaArray,
+                        "link": link
+                        };
+                    console.log(output);
+
+                    const apiBaseUrl = 'https://content.dropboxapi.com/2/files';
+
+                    const filePath = "/news.json";
+
+                    fetch(`${apiBaseUrl}/download`, {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
-                        'Content-Type': 'application/octet-stream',
                         'Dropbox-API-Arg': JSON.stringify({
                         path: filePath,
-                        mode: { '.tag': 'overwrite' },
                         }),
                     },
-                    body: JSON.stringify(jsonData),
                     })
-                    .then(() => {
-                        console.log('Object appended and saved.');
-                    })
-                    .catch((error) => {
-                        console.error('Error saving JSON: ', error);
-                    });
+                    .then((response) => response.text())
+                    .then((data) => {
+                        const jsonData = JSON.parse(data);
+                        console.log(jsonData);
 
-                })
-                .catch((error) => {
-                    console.error('Error reading JSON file: ', error);
-                });
-            });
+                        jsonData.push(output);
+                        console.log(jsonData);
 
-            document.getElementById('load').addEventListener('click', () => {
-            
-            const sharedLink = "https://www.dropbox.com/scl/fi/gco4rzf3v2uqrq9fr9x2r/news.json?rlkey=cnis2k7k60gntdwydkjpcf0r5&dl=0";
+                        fetch(`${apiBaseUrl}/upload`, {
+                        method: 'POST',
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                            'Content-Type': 'application/octet-stream',
+                            'Dropbox-API-Arg': JSON.stringify({
+                            path: filePath,
+                            mode: { '.tag': 'overwrite' },
+                            }),
+                        },
+                        body: JSON.stringify(jsonData),
+                        })
+                        .then(() => {
+                            console.log('Object appended and saved.');
+                        })
+                        .catch((error) => {
+                            console.error('Error saving JSON: ', error);
+                        });
 
-            const directLink = sharedLink.replace("www.dropbox.com", "dl.dropboxusercontent.com");
-            
-            fetch(directLink)
-            .then(news => news.json())
-            .then((news) => {
-            let out = "";
-            for (var i = news.length - 1; i >= 0; i--) {
-                out += "<div id='news-container'>" + 
-                "<div id='news-source-icon'>" +
-                "<h1 id='news-source'>" + news[i].source + 
-                "<div style='color: red'>id:" + news[i].id + 
-                "</div><div style='color: green'>" + moment(news[i].time).tz(targetTimeZone).format('(MMM-D-YYYY) (h:mm a)') + "</div></h1>" +
-                "</div>" +
-                "<div id='news-part'>" +
-                "<h2 id='news-title'>" + news[i].title + "</h2>" +
-                "<p id='news-content'>" + news[i].content + "</p>" +
-                "<a id='news-link' href='" + news[i].link + "' target='_blank'>" + news[i].link + "</a>" +
-                "</div>" +
-                "</div>" +
-                "<br>";
-            }
-            document.getElementById("jsonData").innerHTML =  out;
-            });
-            });
-
-            document.getElementById('submit').addEventListener('click', () => {
-
-            const title = document.getElementById('title').value;
-            const content = document.getElementById('content').value;
-            const link = document.getElementById('link').value;
-            const source = document.querySelector('input[name="source"]:checked').value;
-            const currentTime = moment().format();
-
-            const sharedLink = "https://www.dropbox.com/scl/fi/gco4rzf3v2uqrq9fr9x2r/news.json?rlkey=cnis2k7k60gntdwydkjpcf0r5&dl=0";
-
-            const directLink = sharedLink.replace("www.dropbox.com", "dl.dropboxusercontent.com");
-
-            fetch(directLink)
-            .then(news => news.json())
-            .then((news) => {
-                const output = {
-                    "id": news.length,
-                    "time":currentTime,
-                    "source": source,
-                    "title": title,
-                    "content": content,
-                    "link": link
-                    };
-                console.log(output);
-
-                const apiBaseUrl = 'https://content.dropboxapi.com/2/files';
-
-                const filePath = "/news.json";
-
-                fetch(`${apiBaseUrl}/download`, {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    'Dropbox-API-Arg': JSON.stringify({
-                    path: filePath,
-                    }),
-                },
-                })
-                .then((response) => response.text())
-                .then((data) => {
-                    const jsonData = JSON.parse(data);
-                    console.log(jsonData);
-
-                    jsonData.push(output);
-                    console.log(jsonData);
-
-                    fetch(`${apiBaseUrl}/upload`, {
-                    method: 'POST',
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                        'Content-Type': 'application/octet-stream',
-                        'Dropbox-API-Arg': JSON.stringify({
-                        path: filePath,
-                        mode: { '.tag': 'overwrite' },
-                        }),
-                    },
-                    body: JSON.stringify(jsonData),
-                    })
-                    .then(() => {
-                        console.log('Object appended and saved.');
                     })
                     .catch((error) => {
-                        console.error('Error saving JSON: ', error);
+                        console.error('Error reading JSON file: ', error);
                     });
-
-                })
-                .catch((error) => {
-                    console.error('Error reading JSON file: ', error);
                 });
-            });
-            });
+                });
         </script>
     </main>
 </body>
