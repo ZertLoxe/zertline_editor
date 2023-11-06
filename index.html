@@ -228,6 +228,7 @@
                 const link = document.getElementById('link').value;
                 const source = document.querySelector('input[name="source"]:checked').value;
                 const currentTime = moment().format();
+                let idNumberAdd = 0;
 
                 let sharedLink = "https://www.dropbox.com/scl/fi/gco4rzf3v2uqrq9fr9x2r/news.json?rlkey=cnis2k7k60gntdwydkjpcf0r5&dl=0";
 
@@ -236,8 +237,9 @@
                 fetch(directLink)
                 .then(news => news.json())
                 .then((news) => {
+                let idNumber = news.length + idNumberAdd;
                     const output = {
-                        "id": news.length,
+                        "id": idNumber,
                         "time":currentTime,
                         "source": source,
                         "title": title,
@@ -245,8 +247,9 @@
                         "media":mediaArray,
                         "link": link
                         };
+                    idNumberAdd += 1;
                     console.log(output);
-                    console.log(news.length);
+                    console.log(idNumber);
 
                     const apiBaseUrl = 'https://content.dropboxapi.com/2/files';
 
