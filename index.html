@@ -224,8 +224,6 @@
                 });
                 });
 
-                let idNumberAdd = 0;
-
                 document.getElementById('submit').addEventListener('click', () => {
 
                 const title = document.getElementById('title').value;
@@ -238,20 +236,8 @@
 
                 const directLink = sharedLink.replace("www.dropbox.com", "dl.dropboxusercontent.com");
 
-                fetch(directLink)
-                .then(news => news.json())
-                .then((news) => {
-                    const output = {
-                        "id": news.length,
-                        "time":currentTime,
-                        "source": source,
-                        "title": title,
-                        "content": content,
-                        "media":mediaArray,
-                        "link": link
-                        };
                     console.log(output);
-                    console.log(idNumberAdd);
+                    console.log(news.length);
 
                     const apiBaseUrl = 'https://content.dropboxapi.com/2/files';
 
@@ -270,6 +256,16 @@
                     .then((data) => {
                         const jsonData = JSON.parse(data);
                         console.log(jsonData);
+
+                        const output = {
+                        "id": data.length,
+                        "time":currentTime,
+                        "source": source,
+                        "title": title,
+                        "content": content,
+                        "media":mediaArray,
+                        "link": link
+                        };
 
                         jsonData.push(output);
                         console.log(jsonData);
@@ -297,7 +293,6 @@
                     .catch((error) => {
                         console.error('Error reading JSON file: ', error);
                     });
-                });
                 });
         </script>
     </main>
