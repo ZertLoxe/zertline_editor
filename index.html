@@ -66,11 +66,21 @@
         <script>
 
             let mediaArray = [];
+            let googleDriveImageId;
+
+            function extractImageId(googleDriveLink) {
+                const regex = /\/d\/([^/]+)\//;
+                const match = googleDriveLink.match(regex); 
+                return match ? match[1] : null;
+        }
 
             document.getElementById('addMedia').addEventListener('click', () => {
-                mediaArray.push(document.getElementById('media').value);
+                const googleDriveLink = document.getElementById('media').value;
+                googleDriveImageId = extractImageId(googleDriveLink);
+                mediaArray.push(googleDriveImageId);
                 document.getElementById("media").value = '';
                 document.getElementById("showMediaArray").innerHTML = mediaArray;
+                console.log(mediaArray);
             });
 
             document.getElementById('removeMedia').addEventListener('click', () => {
@@ -223,6 +233,8 @@
 
                 const directLink = sharedLink.replace("www.dropbox.com", "dl.dropboxusercontent.com");
 
+                sharedLink = new "https://www.dropbox.com/scl/fi/gco4rzf3v2uqrq9fr9x2r/news.json?rlkey=cnis2k7k60gntdwydkjpcf0r5&dl=0";
+
                 fetch(directLink)
                 .then(news => news.json())
                 .then((news) => {
@@ -236,6 +248,7 @@
                         "link": link
                         };
                     console.log(output);
+                    console.log(news.length);
 
                     const apiBaseUrl = 'https://content.dropboxapi.com/2/files';
 
