@@ -236,8 +236,6 @@
 
                 const directLink = sharedLink.replace("www.dropbox.com", "dl.dropboxusercontent.com");
 
-                    console.log(news.length);
-
                     const apiBaseUrl = 'https://content.dropboxapi.com/2/files';
 
                     const filePath = "/news.json";
@@ -267,7 +265,8 @@
                         };
 
                         console.log(output);
-                        
+                        console.log(data.length);
+
                         jsonData.push(output);
                         console.log(jsonData);
 
