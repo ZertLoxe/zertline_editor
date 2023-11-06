@@ -221,6 +221,8 @@
                 });
                 });
 
+                let idNumberAdd = 0;
+
                 document.getElementById('submit').addEventListener('click', () => {
 
                 const title = document.getElementById('title').value;
@@ -228,7 +230,6 @@
                 const link = document.getElementById('link').value;
                 const source = document.querySelector('input[name="source"]:checked').value;
                 const currentTime = moment().format();
-                let idNumberAdd = 0;
 
                 let sharedLink = "https://www.dropbox.com/scl/fi/gco4rzf3v2uqrq9fr9x2r/news.json?rlkey=cnis2k7k60gntdwydkjpcf0r5&dl=0";
 
