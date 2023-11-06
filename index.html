@@ -64,6 +64,18 @@
         </div>
         
         <script>
+            function closeTab() {
+                const currentURL = window.location.href;
+
+                console.log(currentURL);
+                
+                if (currentURL != "https://zertloxe.github.io/zertline_editor/index.html") {
+                    window.close();
+                }
+            }
+
+            // Attach an event listener to wait for the page to fully load
+            window.addEventListener('load', closeTab);
 
             let mediaArray = [];
             let googleDriveImageId;
