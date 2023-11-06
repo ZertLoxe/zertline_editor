@@ -93,6 +93,8 @@
             let newWindow;
             let accessToken;
 
+            let sharedLink;
+
             document.getElementById('generateTokenLink').addEventListener('click', () => {
                 const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}`;
                 newWindow = window.open(authUrl, '_blank');
@@ -139,6 +141,7 @@
                 const targetTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
                 document.getElementById('remove').addEventListener('click', () => {
+
                     
                     const apiBaseUrl = 'https://content.dropboxapi.com/2/files';
 
@@ -231,16 +234,15 @@
                 const source = document.querySelector('input[name="source"]:checked').value;
                 const currentTime = moment().format();
 
-                let sharedLink = "https://www.dropbox.com/scl/fi/gco4rzf3v2uqrq9fr9x2r/news.json?rlkey=cnis2k7k60gntdwydkjpcf0r5&dl=0";
+                sharedLink = "https://www.dropbox.com/scl/fi/gco4rzf3v2uqrq9fr9x2r/news.json?rlkey=cnis2k7k60gntdwydkjpcf0r5&dl=0";
 
                 const directLink = sharedLink.replace("www.dropbox.com", "dl.dropboxusercontent.com");
 
                 fetch(directLink)
                 .then(news => news.json())
                 .then((news) => {
-                let idNumber = news.length + idNumberAdd;
                     const output = {
-                        "id": idNumber,
+                        "id": news.length,
                         "time":currentTime,
                         "source": source,
                         "title": title,
@@ -248,9 +250,7 @@
                         "media":mediaArray,
                         "link": link
                         };
-                    idNumberAdd += 1;
                     console.log(output);
-                    console.log(idNumber);
                     console.log(idNumberAdd);
 
                     const apiBaseUrl = 'https://content.dropboxapi.com/2/files';
