@@ -19,6 +19,7 @@
         <div>
             <button id="generateTokenLink">Generate Token</button>
             <p id="tokenstat" style="color: red;font-size: x-large;font-weight: bold;">Not ready</p>
+            <p id="submitMessage" style="color: blue;font-size: x-large;font-weight: bold;"></p>
             <p>Title</p>
             <input type="text" id="title">
             <p>Content</p>
@@ -35,7 +36,7 @@
                 <input type="text" id="media" size="100">
             </div>
             <div>
-                <p>source</p>
+                <p>Source</p>
 
                 <input type="radio" value="News" name="source" id="source_new">
                 <label for="source_new">News</label>
@@ -137,7 +138,7 @@
 
                         cancelAnimationFrame(animationFrameId);
 
-                        document.getElementById("tokenstat").innerHTML = "All good, now edit!"
+                        document.getElementById("tokenstat").innerHTML = "All good, now edit!";
                         document.getElementById("tokenstat").style.color = "green";
 
                     } else {
@@ -154,6 +155,7 @@
 
                 document.getElementById('remove').addEventListener('click', () => {
 
+                    const numId = document.getElementById('remove-id').value;
                     
                     const apiBaseUrl = 'https://content.dropboxapi.com/2/files';
 
@@ -171,7 +173,6 @@
                     .then((response) => response.text())
                     .then((data) => {
                         const jsonData = JSON.parse(data);
-                        const numId = document.getElementById('remove-id').value;
                         console.log(numId);
                         console.log(jsonData);
 
@@ -196,6 +197,7 @@
                         })
                         .then(() => {
                             console.log('Object appended and saved.');
+                            document.getElementById("submitMessage").innerHTML = "News id:"+ numId +" is removed successfully!!";
                         })
                         .catch((error) => {
                             console.error('Error saving JSON: ', error);
@@ -296,6 +298,7 @@
                         })
                         .then(() => {
                             console.log('Object appended and saved.');
+                            document.getElementById("submitMessage").innerHTML = "News added successfully!!";
                         })
                         .catch((error) => {
                             console.error('Error saving JSON: ', error);
