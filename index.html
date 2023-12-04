@@ -31,10 +31,10 @@
                 <input type="text" id="media" size="100">
                 <br>
                 <button id="addMedia">Add</button>
-                <button id="cancelRemoveMedia" style="display: none;">Cancel removed media</button>
                 <br>
                 <p id="showMediaArray"></p>
                 <div id="showMediaInteraction" style="display: flex;overflow-x: scroll;background-color: cadetblue;"></div>
+                <button id="cancelRemoveMedia" style="display: none;">Cancel removed media</button>
             </div>
             <div>
                 <p>Source</p>
@@ -110,7 +110,6 @@
             let mediaInteractionID = 0
 
             document.getElementById('addMedia').addEventListener('click', () => {
-                document.getElementById('cancelRemoveMedia').style.display = 'block';
                 const googleDriveLink = document.getElementById('media').value;
                 googleDriveImageId = extractImageId(googleDriveLink);
                 mediaArray.push(googleDriveImageId);
@@ -122,6 +121,7 @@
             });
 
             function removeMediaInteractionFunction(mediaID) {
+                document.getElementById('cancelRemoveMedia').style.display = 'block';
                 let mediaToRemoveIDNumber = document.getElementById(mediaID).value;
                 console.log('you clicked on the media id:'+mediaToRemoveIDNumber)
                 document.getElementById("mediaInteraction_" + mediaToRemoveIDNumber ).style.display = 'none';
@@ -130,6 +130,7 @@
             };
 
             document.getElementById('cancelRemoveMedia').addEventListener('click', () => {
+                document.getElementById('cancelRemoveMedia').style.display = 'none';
                 mediaToRemoveArray = [];
                 var parentElement = document.getElementById('showMediaInteraction');
                 var children = parentElement.children;
