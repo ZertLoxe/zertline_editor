@@ -390,6 +390,11 @@
             });
         
             document.getElementById('submit-edit').addEventListener('click', () => {
+
+                for (let i = mediaToRemoveArray.length - 1; i >= 0; i--) {
+                    mediaArray.splice(mediaToRemoveArray[i], 1);
+                }
+                document.getElementById("showMediaArray").innerHTML = mediaArray;
             
             const title = document.getElementById('title').value;
             const content = document.getElementById('content').value;
