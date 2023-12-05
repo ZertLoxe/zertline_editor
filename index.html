@@ -12,7 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.36/moment-timezone-with-data-10-year-range.min.js"></script>
     
-    <title>ZL News Edit</title>
+    <title>ZL News Tools</title>
 </head>
 <body>
     <main>
@@ -28,7 +28,7 @@
             <input type="text" id="link">
             <div>
                 <p>Media</p>
-                <input type="text" id="media" size="100">
+                <input type="text" id="media" size="100" onkeydown="enterKeyPress(event)">
                 <br>
                 <button id="addMedia">Add</button>
                 <br>
@@ -109,7 +109,13 @@
         }
             let mediaInteractionID = 0
 
-            document.getElementById('addMedia').addEventListener('click', () => {
+            function enterKeyPress(event) {
+                if (event.keyCode === 13) {
+                    addMediaFunction();
+                }
+            }
+
+            function addMediaFunction() {
                 const googleDriveLink = document.getElementById('media').value;
                 googleDriveImageId = extractImageId(googleDriveLink);
                 mediaArray.push(googleDriveImageId);
@@ -118,6 +124,10 @@
                 console.log(mediaArray);
                 document.getElementById("showMediaInteraction").innerHTML += "<div id='mediaInteraction_" + mediaInteractionID + "'><img src='https://drive.google.com/uc?export=view&id=" + googleDriveImageId + "' style='height: 200px;'><br><button type='button' id='removeMediaInteraction" + mediaInteractionID + "' onclick='removeMediaInteractionFunction(this.id)' value=" + mediaInteractionID + ">Remove</button></div>";
                 mediaInteractionID += 1
+            };
+
+            document.getElementById('addMedia').addEventListener('click', () => {
+                addMediaFunction();
             });
 
             function removeMediaInteractionFunction(mediaID) {
