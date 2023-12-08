@@ -340,6 +340,7 @@
 
         let actionFunction = null;
         let UIDataMessage;
+        let jsonData;
 
         const postKey = document.getElementById("post-json-key").value;
         const postTitle = document.getElementById("post-title").value;
@@ -363,7 +364,7 @@
                 .then((response) => response.text())
                 .then((data) => {
 
-                    const jsonData = JSON.parse(data);
+                    jsonData = JSON.parse(data);
 
                     actionFunction();
 
