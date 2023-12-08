@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Unlimit Your Imagination">
+    <meta name="viewport" content="width=device-width, initail-scale=1.0">
+    <meta name="keywords" content="zertline, zertloxe">
+    <meta name="author" content="zertloxe">
+
+    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs"
+        data-app-key="nx511xzzvb1zelk"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.36/moment-timezone-with-data-10-year-range.min.js"></script>
+
+    <title>ZL Posts Tools</title>
+</head>
+
+<body>
+    <div>
+        <button id="generateTokenLink">Generate Token</button>
+        <p id="tokenstat" style="color: red;font-size: x-large;font-weight: bold;">Not ready</p>
+    </div>
+    <div>
+        <p>Post name key in Json (data name)</p>
+        <input type="text" id="post-json-key">
+        <hr>
+
+        <p>Title</p>
+        <input type="text" id="post-title">
+        <hr>
+
+        <p>post element structure</p>
+        <hr>
+        <div>
+            <p>Title for this post element</p>
+
+            <input type="radio" value=false name="title-structure" id="title-structure-false">
+            <label for="title-structure-false">no</label>
+
+            <input type="radio" value=true name="title-structure" id="title-structure-true">
+            <label for="title-structure-true">yes</label>
+        </div>
+        <hr>
+        <div>
+            <p>Media for this post element</p>
+
+            <input type="radio" value="0" name="media-structure" id="media-structure-null">
+            <label for="media-structure-null">no media</label>
+
+            <input type="radio" value="1" name="media-structure" id="media-structure-single">
+            <label for="media-structure-single">single</label>
+
+            <input type="radio" value="2" name="media-structure" id="media-structure-multiple">
+            <label for="media-structure-multiple">multiple</label>
+        </div>
+        <hr>
+        <div>
+            <p>Text for this post element</p>
+
+            <input type="radio" value="0" name="text-structure" id="text-structure-null">
+            <label for="text-structure-null">no text</label>
+
+            <input type="radio" value="1" name="text-structure" id="text-structure-single">
+            <label for="text-structure-single">single</label>
+
+            <input type="radio" value="2" name="text-structure" id="text-structure-multiple">
+            <label for="text-structure-multiple">multiple</label>
+        </div>
+        <hr>
+        <button type="button" id="post-tool-reveal-create">Click to start posting</button>
+        <hr>
+
+        <div id="post-tools" style="display: none;">
+            <div id="title-tool" style="display: none;">
+                <p>Title</p>
+                <input type="text" id="title">
+            </div>
+            <hr>
+            <div id="media-tool" style="display: none;">
+                <p>Media</p>
+                <input type="text" size="100" id="media">
+
+                <div>
+                    <p>Media type</p>
+
+                    <p id="show-multiple-media"></p>
+
+                    <input type="radio" value="I" name="media-type" id="media-type-image">
+                    <label for="media-type-image">image</label>
+
+                    <input type="radio" value="V" name="media-type" id="media-type-video">
+                    <label for="media-type-video">video</label>
+                </div>
+
+                <div id="multiple-media" style="display: none;">
+                    <button type="button" id="add-media">Add</button>
+                    <button type="button" id="remove-media">Remove</button>
+                </div>
+            </div>
+            <hr>
+            <div id="text-tool" style="display: none;">
+                <p>Text</p>
+
+                <p id="show-multiple-text"></p>
+
+                <textarea id="text" cols="50" rows="10"></textarea>
+
+                <div id="multiple-text" style="display: none;">
+                    <button type="button" id="add-text">Add</button>
+                    <button type="button" id="remove-text">Remove</button>
+                </div>
+            </div>
+            <div id="special-element-orientation" style="display: none;">
+                <p>Special element orientation</p>
+
+                <input type="radio" value="0" name="element-orientation" id="element-orientation-null">
+                <label for="element-orientation">no orientation</label>
+
+                <input type="radio" value="1" name="element-orientation" id="element-orientation-left">
+                <label for="element-orientation">media to the left</label>
+
+                <input type="radio" value="2" name="element-orientation" id="element-orientation-right">
+                <label for="element-orientation">media to the right</label>
+            </div>
+            <hr>
+            <button type="button" id="add-post-part">Add this post part</button>
+        </div>
+        <hr>
+        <button type="button" id="add-post-part">Submit the post</button>
+    </div>
+    <script>
+
+        function closeTab() {
+            const currentURL = window.location.href;
+
+            console.log(currentURL);
+
+            if (currentURL != "https://zertloxe.github.io/zertline_editor/posts-tools.html") {
+                window.close();
+            }
+        }
+
+        window.addEventListener('load', closeTab);
+
+        const clientId = 'hs2pnr348r68qex';
+        const redirectUri = 'https://zertloxe.github.io/zertline_editor/posts-tools.html';
+        let newWindow;
+        let accessToken;
+        let sharedLink;
+
+        let callCount = 0;
+        const maxCallCount = 10;
+        let animationFrameId;
+
+        function captureURL() {
+            if (newWindow) {
+                const newWindowURL = newWindow.location.href;
+                console.log('URL of the new window:', newWindowURL);
+
+                callCount++;
+
+                if (callCount >= maxCallCount) {
+                    const url = new URL(newWindowURL);
+                    console.log(url);
+                    const hash = url.hash;
+                    accessToken = hash.split('=')[1].split('&')[0];
+                    console.log(accessToken);
+
+                    newWindow.close();
+
+                    cancelAnimationFrame(animationFrameId);
+
+                    document.getElementById("tokenstat").innerHTML = "All good, now start posting!";
+                    document.getElementById("tokenstat").style.color = "green";
+
+                } else {
+                    animationFrameId = requestAnimationFrame(captureURL);
+                }
+            }
+        };
+
+        document.getElementById('generateTokenLink').addEventListener('click', () => {
+            const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}`;
+            newWindow = window.open(authUrl, '_blank');
+            if (!newWindow) {
+                alert('Please allow pop-ups to proceed.');
+            }
+            animationFrameId = requestAnimationFrame(captureURL);
+        });
+
+        let postElement = [];
+        let postElementStructureArray = [];
+        let titleElement = null;
+        let mediaElement = null;
+        let textElement = null;
+        let postPart = [];
+
+        function resetPostTools() {
+
+            document.getElementById("title").value = '';
+            document.getElementById("media").value = '';
+            document.getElementById("text").value = '';
+
+            postElementStructureArray = [];
+            titleElement = null;
+            mediaElement = null;
+            textElement = null;
+
+            document.getElementById("post-tools").style.display = "none";
+            document.getElementById("title-tool").style.display = "none";
+            document.getElementById("media-tool").style.display = "none";
+            document.getElementById("multiple-media").style.display = "none";
+            document.getElementById("text-tool").style.display = "none";
+            document.getElementById("multiple-text").style.display = "none";
+
+
+            document.getElementById("show-multiple-media").innerHTML = '';
+            document.getElementById("show-multiple-text").innerHTML = '';
+
+            if (document.querySelector('input[name="media-type"]:checked') != null) {
+                document.querySelector('input[name="media-type"]:checked').checked = false;
+            };
+
+        };
+
+        document.getElementById('post-tool-reveal-create').addEventListener('click', () => {
+
+            resetPostTools();
+
+            postElementStructureArray = [document.querySelector('input[name="title-structure"]:checked').value, document.querySelector('input[name="media-structure"]:checked').value, document.querySelector('input[name="text-structure"]:checked').value];
+
+            document.getElementById("post-tools").style.display = "block";
+
+            if (postElementStructureArray[0] == "true") {
+                document.getElementById("title-tool").style.display = "block";
+            };
+
+            if (postElementStructureArray[1] == "1" || postElementStructureArray[1] == '2') {
+
+                document.getElementById("media-tool").style.display = "block";
+
+                if (postElementStructureArray[1] == "2") {
+                    mediaElement = [];
+                    document.getElementById("multiple-media").style.display = "block";
+                };
+            };
+
+            if (postElementStructureArray[2] == "1" || postElementStructureArray[2] == '2') {
+
+                document.getElementById("text-tool").style.display = "block";
+
+                if (postElementStructureArray[2] == "2") {
+                    textElement = [];
+                    document.getElementById("multiple-text").style.display = "block";
+                };
+            };
+
+        });
+
+        function extractImageId(googleDriveLink) {
+            const regex = /\/d\/([^/]+)\//;
+            const match = googleDriveLink.match(regex);
+            return match ? match[1] : null;
+        };
+
+        document.getElementById('add-media').addEventListener('click', () => {
+
+            let mediaGoogleDriveID = extractImageId(document.getElementById("media").value);
+            let mediaType = document.querySelector('input[name="media-type"]:checked').value;
+
+            console.log(mediaGoogleDriveID);
+            console.log(mediaType);
+
+            mediaElement.push([mediaType, mediaGoogleDriveID]);
+
+            console.log(mediaElement);
+
+            document.getElementById("media").value = '';
+            document.getElementById("show-multiple-media").innerHTML = mediaElement;
+        });
+
+        document.getElementById('remove-media').addEventListener('click', () => {
+
+            mediaElement.pop();
+            document.getElementById("show-multiple-media").innerHTML = mediaElement;
+
+        });
+        document.getElementById('add-text').addEventListener('click', () => {
+
+            let textElementPart = document.getElementById("text").value;
+
+            console.log(textElementPart);
+
+            textElement.push(textElementPart);
+
+            console.log(textElement);
+
+            document.getElementById("text").value = '';
+            document.getElementById("show-multiple-text").innerHTML = textElement;
+        });
+
+        document.getElementById('remove-text').addEventListener('click', () => {
+
+            textElement.pop();
+            document.getElementById("show-multiple-text").innerHTML = textElement;
+
+        });
+
+        document.getElementById('add-post-part').addEventListener('click', () => {
+
+            if (postElementStructureArray[0] == "true") {
+                titleElement = document.getElementById("title").value;
+            };
+
+            if (postElementStructureArray[1] == "1") {
+                mediaElement = [document.querySelector('input[name="media-type"]:checked').value, extractImageId(document.getElementById("media").value)];
+            };
+
+            if (postElementStructureArray[2] == "1") {
+                textElement = document.getElementById("text").value;
+            };
+
+            let postElementPart = {
+                "post-element-structure": postElementStructureArray,
+                "title": titleElement,
+                "media": mediaElement,
+                "text": textElement
+            };
+
+            postElement.push(postElementPart);
+
+            console.log(postElement);
+
+            resetPostTools();
+
+        });
+
+        let actionFunction = null;
+        let UIDataMessage;
+
+        const postKey = document.getElementById("post-json-key").value;
+        const postTitle = document.getElementById("post-title").value;
+        let finalPost;
+
+        function submitPost() {
+            const jsonData = JSON.parse(data);
+
+            finalPost = {
+                "post-title": postTitle,
+                "post-elements": postElement,
+                "time": ["release-date", "editing-date"]
+            };
+
+            jsonData.dataset[postKey] = finalPost;
+
+        };
+
+        function downloadActionUploadDropbox() {
+
+            const apiBaseUrl = 'https://content.dropboxapi.com/2/files';
+
+            const filePath = "/posts.json";
+
+            fetch(`${apiBaseUrl}/download`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Dropbox-API-Arg': JSON.stringify({
+                        path: filePath,
+                    }),
+                },
+            })
+                .then((response) => response.text())
+                .then((data) => {
+
+                    actionFunction();
+
+                    fetch(`${apiBaseUrl}/upload`, {
+                        method: 'POST',
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                            'Content-Type': 'application/octet-stream',
+                            'Dropbox-API-Arg': JSON.stringify({
+                                path: filePath,
+                                mode: { '.tag': 'overwrite' },
+                            }),
+                        },
+                        body: JSON.stringify(jsonData),
+                    })
+                        .then(() => {
+                            console.log('Object appended and saved.');
+                            document.getElementById("submitMessage").innerHTML = UIDataMessage;
+                            actionFunction = null;
+                        })
+                        .catch((error) => {
+                            console.error('Error saving JSON: ', error);
+                        });
+
+                })
+                .catch((error) => {
+                    console.error('Error reading JSON file: ', error);
+                });
+        };
+
+        document.getElementById('add-post-part').addEventListener('click', () => {
+
+            actionFunction = submitPost;
+
+            UIDataMessage = "the '" + postTitle + "' post is now in public!!"
+
+            downloadActionUploadDropbox()
+
+        });
+
+    </script>
+</body>
+
+</html>
