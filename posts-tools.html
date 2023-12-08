@@ -342,8 +342,9 @@
         let actionFunction = null;
         let UIDataMessage;
 
-        let postKey = document.getElementById("post-json-key").value;
-        let postTitle = document.getElementById("post-title").value;
+        let postKey;
+        let postTitle;
+
         let finalPost;
 
         function downloadActionUploadDropbox() {
@@ -368,6 +369,8 @@
 
                     if (actionFunction == "submitPost") {
 
+                        postKey = document.getElementById("post-json-key").value;
+                        postTitle = document.getElementById("post-title").value;
 
                         finalPost = {
                             "post-title": postTitle,
