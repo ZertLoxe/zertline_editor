@@ -342,8 +342,8 @@
         let actionFunction = null;
         let UIDataMessage;
 
-        const postKey = document.getElementById("post-json-key").value;
-        const postTitle = document.getElementById("post-title").value;
+        let postKey = document.getElementById("post-json-key").value;
+        let postTitle = document.getElementById("post-title").value;
         let finalPost;
 
         function downloadActionUploadDropbox() {
@@ -368,7 +368,6 @@
 
                     if (actionFunction == "submitPost") {
 
-                        jsonData.dataset = jsonData.dataset || {};
 
                         finalPost = {
                             "post-title": postTitle,
@@ -376,7 +375,7 @@
                             "time": ["release-date", "editing-date"]
                         };
 
-                        jsonData.dataset[postKey] = finalPost;
+                        jsonData[postKey] = finalPost;
 
                     };
 
