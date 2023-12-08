@@ -340,7 +340,6 @@
 
         let actionFunction = null;
         let UIDataMessage;
-        let jsonData;
 
         const postKey = document.getElementById("post-json-key").value;
         const postTitle = document.getElementById("post-title").value;
@@ -364,7 +363,19 @@
                 .then((response) => response.text())
                 .then((data) => {
 
-                    jsonData = JSON.parse(data);
+                    const jsonData = JSON.parse(data);
+
+                    if (actionFunction == "submitPost") {
+
+                        finalPost = {
+                            "post-title": postTitle,
+                            "post-elements": postElement,
+                            "time": ["release-date", "editing-date"]
+                        };
+
+                        jsonData.dataset[postKey] = finalPost;
+
+                    };
 
                     actionFunction();
 
@@ -395,21 +406,9 @@
                 });
         };
 
-        function submitPost() {
-
-            finalPost = {
-                "post-title": postTitle,
-                "post-elements": postElement,
-                "time": ["release-date", "editing-date"]
-            };
-
-            jsonData.dataset[postKey] = finalPost;
-
-        };
-
         document.getElementById('submit-post').addEventListener('click', () => {
 
-            actionFunction = submitPost;
+            actionFunction = "submitPost";
 
             UIDataMessage = "the '" + postTitle + "' post is now in public!!"
 
