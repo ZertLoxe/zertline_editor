@@ -345,19 +345,6 @@
         const postTitle = document.getElementById("post-title").value;
         let finalPost;
 
-        function submitPost() {
-            const jsonData = JSON.parse(data);
-
-            finalPost = {
-                "post-title": postTitle,
-                "post-elements": postElement,
-                "time": ["release-date", "editing-date"]
-            };
-
-            jsonData.dataset[postKey] = finalPost;
-
-        };
-
         function downloadActionUploadDropbox() {
 
             const apiBaseUrl = 'https://content.dropboxapi.com/2/files';
@@ -403,6 +390,19 @@
                 .catch((error) => {
                     console.error('Error reading JSON file: ', error);
                 });
+        };
+
+        function submitPost() {
+            const jsonData = JSON.parse(data);
+
+            finalPost = {
+                "post-title": postTitle,
+                "post-elements": postElement,
+                "time": ["release-date", "editing-date"]
+            };
+
+            jsonData.dataset[postKey] = finalPost;
+
         };
 
         document.getElementById('submit-post').addEventListener('click', () => {
