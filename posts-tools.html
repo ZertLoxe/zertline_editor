@@ -363,6 +363,8 @@
                 .then((response) => response.text())
                 .then((data) => {
 
+                    const jsonData = JSON.parse(data);
+
                     actionFunction();
 
                     fetch(`${apiBaseUrl}/upload`, {
@@ -393,7 +395,6 @@
         };
 
         function submitPost() {
-            const jsonData = JSON.parse(data);
 
             finalPost = {
                 "post-title": postTitle,
