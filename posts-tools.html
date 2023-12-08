@@ -367,6 +367,8 @@
 
                     if (actionFunction == "submitPost") {
 
+                        jsonData.dataset = jsonData.dataset || {};
+
                         finalPost = {
                             "post-title": postTitle,
                             "post-elements": postElement,
@@ -376,8 +378,6 @@
                         jsonData.dataset[postKey] = finalPost;
 
                     };
-
-                    actionFunction();
 
                     fetch(`${apiBaseUrl}/upload`, {
                         method: 'POST',
