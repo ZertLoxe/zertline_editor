@@ -372,10 +372,12 @@
                         postKey = document.getElementById("post-json-key").value;
                         postTitle = document.getElementById("post-title").value;
 
+                        UIDataMessage = "the '" + postTitle + "' post is now in public!!"
+
                         finalPost = {
                             "post-title": postTitle,
                             "post-elements": postElement,
-                            "time": [moment().format(),]
+                            "time": [moment().format(),null]
                         };
 
                         postElement = null;
@@ -397,7 +399,7 @@
                         body: JSON.stringify(jsonData),
                     })
                         .then(() => {
-                            console.log('Object appended and saved.');
+                            console.log('Object added and saved.');
                             document.getElementById("submitMessage").innerHTML = UIDataMessage;
                             actionFunction = null;
                         })
@@ -416,8 +418,6 @@
             actionFunction = "submitPost";
 
             downloadActionUploadDropbox();
-
-            UIDataMessage = "the '" + postTitle + "' post is now in public!!"
 
         });
 
