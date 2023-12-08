@@ -375,8 +375,10 @@
                         finalPost = {
                             "post-title": postTitle,
                             "post-elements": postElement,
-                            "time": ["release-date", "editing-date"]
+                            "time": [moment().format(),]
                         };
+
+                        postElement = null;
 
                         jsonData[postKey] = finalPost;
 
@@ -413,9 +415,9 @@
 
             actionFunction = "submitPost";
 
-            UIDataMessage = "the '" + postTitle + "' post is now in public!!"
+            downloadActionUploadDropbox();
 
-            downloadActionUploadDropbox()
+            UIDataMessage = "the '" + postTitle + "' post is now in public!!"
 
         });
 
