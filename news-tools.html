@@ -106,13 +106,12 @@
             window.addEventListener('load', closeTab);
 
             let mediaArray = [];
-            let googleDriveImageId;
+            let imageLinkEnd;
             let mediaToRemoveArray = [];
 
-            function extractImageId(googleDriveLink) {
-                const regex = /\/d\/([^/]+)\//;
-                const match = googleDriveLink.match(regex);
-                return match ? match[1] : null;
+            function extractImageId(imageLink) {
+                var url = new URL(imageLink)
+                return url.pathname.substring(1);
             }
             let mediaInteractionID = 0
 
@@ -124,12 +123,12 @@
 
             function addMediaFunction() {
                 const googleDriveLink = document.getElementById('media').value;
-                googleDriveImageId = extractImageId(googleDriveLink);
-                mediaArray.push(googleDriveImageId);
+                imageLinkEnd = extractImageId(googleDriveLink);
+                mediaArray.push(imageLinkEnd);
                 document.getElementById("media").value = '';
                 document.getElementById("showMediaArray").innerHTML = mediaArray;
                 console.log(mediaArray);
-                document.getElementById("showMediaInteraction").innerHTML += "<div id='mediaInteraction_" + mediaInteractionID + "'><img src='https://drive.google.com/uc?export=view&id=" + googleDriveImageId + "' style='height: 200px;'><br><button type='button' id='removeMediaInteraction" + mediaInteractionID + "' onclick='removeMediaInteractionFunction(this.id)' value=" + mediaInteractionID + ">Remove</button></div>";
+                document.getElementById("showMediaInteraction").innerHTML += "<div id='mediaInteraction_" + mediaInteractionID + "'><img src='https://i.ibb.co/" + imageLinkEnd + "' style='height: 200px;'><br><button type='button' id='removeMediaInteraction" + mediaInteractionID + "' onclick='removeMediaInteractionFunction(this.id)' value=" + mediaInteractionID + ">Remove</button></div>";
                 mediaInteractionID += 1
             };
 
