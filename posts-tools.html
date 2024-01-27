@@ -139,12 +139,12 @@
         <hr>
         <button type="button" id="submit-post">Submit the post</button>
         <hr>
-        <button type="button" id="show-edit-post">Click to start editing the post</button>
+        <button type="button" id="show-edit-post">Click to start editing some posts</button>
         <div id="edit-post-section" style="display: none;">
             <select name="post-list-to-edit" id="post-list-to-edit"></select>
         </div>
         <hr>
-        <button type="button" id="show-delete-post">Click to start editing the post</button>
+        <button type="button" id="show-delete-post">Click to start deleting some posts</button>
         <div id="delete-post-section" style="display: none;">
             <select name="post-list-to-delete" id="post-list-to-delete"></select>
             <button type="button" id="delete-post">Delete the post</button>
@@ -461,7 +461,7 @@
 
                         console.log("post is deleted")
 
-                        // delete jsonData[document.getElementById("post-list-to-delete").value]
+                        delete jsonData[document.getElementById("post-list-to-delete").value]
 
                     };
 
