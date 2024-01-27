@@ -114,17 +114,24 @@
                     <button type="button" id="remove-text">Remove</button>
                 </div>
             </div>
-            <div id="special-element-orientation" style="display: none;">
-                <p>Special element orientation</p>
+            <div id="special-element-shape" style="display: none;">
+                <p>Special element shape</p>
 
-                <input type="radio" value="0" name="element-orientation" id="element-orientation-null">
-                <label for="element-orientation">no orientation</label>
+                <input type="radio" value="null" name="element-shape" id="default-shape">
+                <label for="default-shape">keep it default</label>
 
-                <input type="radio" value="1" name="element-orientation" id="element-orientation-left">
-                <label for="element-orientation">media to the left</label>
+                <div id="single-media-text-shape" style="display: none;">
+                    <input type="radio" value="LM" name="element-shape" id="single-media-text-orientation-left">
+                    <label for="single-media-text-orientation-left">media to the left</label>
 
-                <input type="radio" value="2" name="element-orientation" id="element-orientation-right">
-                <label for="element-orientation">media to the right</label>
+                    <input type="radio" value="RM" name="element-shape" id="single-media-text-orientation-right">
+                    <label for="single-media-text-orientation-right">media to the right</label>
+                </div>
+
+                <div id="multiple-media-shape" style="display: none;">
+                    <input type="radio" value="AG" name="element-shape" id="multiple-media-arrow-guide">
+                    <label for="multiple-media-arrow-guide">arrow guide</label>
+                </div>
             </div>
             <hr>
             <button type="button" id="add-post-part">Add this post part</button>
@@ -197,6 +204,7 @@
         let titleElement = null;
         let mediaElement = null;
         let textElement = null;
+        let shapeElement = null;
         let postPart = [];
 
         function resetPostTools() {
@@ -209,6 +217,7 @@
             titleElement = null;
             mediaElement = null;
             textElement = null;
+            shapeElement = null;
 
             document.getElementById("post-tools").style.display = "none";
             document.getElementById("title-tool").style.display = "none";
@@ -216,6 +225,9 @@
             document.getElementById("multiple-media").style.display = "none";
             document.getElementById("text-tool").style.display = "none";
             document.getElementById("multiple-text").style.display = "none";
+            document.getElementById("special-element-shape").style.display = "none";
+            document.getElementById("single-media-text-shape").style.display = "none";
+            document.getElementById("multiple-media-shape").style.display = "none";
 
 
             document.getElementById("show-multiple-media").innerHTML = '';
@@ -223,6 +235,10 @@
 
             if (document.querySelector('input[name="media-type"]:checked') != null) {
                 document.querySelector('input[name="media-type"]:checked').checked = false;
+            };
+
+            if (document.querySelector('input[name="element-shape"]:checked') != null) {
+                document.querySelector('input[name="element-shape"]:checked').checked = false;
             };
 
         };
@@ -259,23 +275,57 @@
                 };
             };
 
+            if (postElementStructureArray[1] == "1" && postElementStructureArray[2] == '1') {
+
+                document.getElementById("special-element-shape").style.display = "block";
+                document.getElementById("single-media-text-shape").style.display = "block";
+
+            };
+
+            if (postElementStructureArray[1] == "2") {
+
+                document.getElementById("special-element-shape").style.display = "block";
+                document.getElementById("multiple-media-shape").style.display = "block";
+
+            };
+
         });
 
-        function extractImageId(googleDriveLink) {
-            const regex = /\/d\/([^/]+)\//;
-            const match = googleDriveLink.match(regex);
-            return match ? match[1] : null;
+        function extractImageId(imageLink) {
+            var url = new URL(imageLink)
+            return url.pathname.substring(1);
         };
+
+        function extractVideoId(youtubeLink) {
+            const regex = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+            const match = youtubeLink.match(regex);
+            return match ? match[1] : null;
+        }
+
+        function identifyLinkType(link) {
+
+            const imageLinkPattern = /^https:\/\/i\.ibb\.co\/([^/]+)\//;
+
+            const youtubePattern = /^(https?:\/\/)?(www\.)?(youtube\.com\/.*(\?v=|\/embed\/|\/v\/|\/watch\?v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+
+            if (imageLinkPattern.test(link)) {
+                return extractImageId(link);
+            } else if (youtubePattern.test(link)) {
+                return extractVideoId(link);
+            } else {
+                return 'none';
+            }
+        }
 
         document.getElementById('add-media').addEventListener('click', () => {
 
-            let mediaGoogleDriveID = extractImageId(document.getElementById("media").value);
+            let mediaLinkEnd = identifyLinkType(document.getElementById("media").value);
             let mediaType = document.querySelector('input[name="media-type"]:checked').value;
 
-            console.log(mediaGoogleDriveID);
+            console.log(mediaLinkEnd);
             console.log(mediaType);
 
-            mediaElement.push([mediaType, mediaGoogleDriveID]);
+            mediaElement.push([mediaType, mediaLinkEnd]);
 
             console.log(mediaElement);
 
@@ -317,23 +367,33 @@
             };
 
             if (postElementStructureArray[1] == "1") {
-                mediaElement = [document.querySelector('input[name="media-type"]:checked').value, extractImageId(document.getElementById("media").value)];
+                mediaElement = [document.querySelector('input[name="media-type"]:checked').value, identifyLinkType(document.getElementById("media").value)];
             };
 
             if (postElementStructureArray[2] == "1") {
                 textElement = document.getElementById("text").value;
             };
 
+            if ((postElementStructureArray[1] == "1" && postElementStructureArray[2] == '1') || postElementStructureArray[1] == "2") {
+                if (document.querySelector('input[name="element-shape"]:checked').value == "null") {
+                    shapeElement = document.getElementById("default-shape").getAttribute("data-null-value");
+                } else {
+                    shapeElement = document.querySelector('input[name="element-shape"]:checked').value;
+                };
+            };
+
             let postElementPart = {
-                "post-element-structure": postElementStructureArray,
+                "postElementStructure": postElementStructureArray,
                 "title": titleElement,
                 "media": mediaElement,
-                "text": textElement
+                "text": textElement,
+                "elementShape": shapeElement
             };
 
             postElement.push(postElementPart);
 
             console.log(postElement);
+            console.log(shapeElement)
 
             resetPostTools();
 
@@ -375,9 +435,9 @@
                         UIDataMessage = "the '" + postTitle + "' post is now in public!!"
 
                         finalPost = {
-                            "post-title": postTitle,
-                            "post-elements": postElement,
-                            "time": [moment().format(),null]
+                            "postTitle": postTitle,
+                            "postElements": postElement,
+                            "time": [moment().format(), null]
                         };
 
                         postElement = null;
