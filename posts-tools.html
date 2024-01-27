@@ -138,6 +138,17 @@
         </div>
         <hr>
         <button type="button" id="submit-post">Submit the post</button>
+        <hr>
+        <button type="button" id="show-edit-post">Click to start editing the post</button>
+        <div id="edit-post-section" style="display: none;">
+            <select name="post-list-to-edit" id="post-list-to-edit"></select>
+        </div>
+        <hr>
+        <button type="button" id="show-delete-post">Click to start editing the post</button>
+        <div id="delete-post-section" style="display: none;">
+            <select name="post-list-to-delete" id="post-list-to-delete"></select>
+            <button type="button" id="delete-post">Delete the post</button>
+        </div>
     </div>
     <script>
 
@@ -444,6 +455,14 @@
 
                         jsonData[postKey] = finalPost;
 
+                    } else if (actionFunction == "deletePost") {
+
+                        alert("are you sure you want to delete the '" + document.getElementById("post-list-to-delete").value + "' post?")
+
+                        console.log("post is deleted")
+
+                        // delete jsonData[document.getElementById("post-list-to-delete").value]
+
                     };
 
                     fetch(`${apiBaseUrl}/upload`, {
@@ -478,6 +497,60 @@
             actionFunction = "submitPost";
 
             downloadActionUploadDropbox();
+
+        });
+
+        function fetchAndAction(funtion) {
+
+            const sharedLink = "https://www.dropbox.com/scl/fi/mrusdrepjd6esr1wt3sxj/posts.json?rlkey=2wgj9ouddf93zhd2u5kxm0wcs&dl=0";
+
+            const directLink = sharedLink.replace("www.dropbox.com", "dl.dropboxusercontent.com");
+
+            fetch(directLink)
+                .then(posts => posts.json())
+                .then((posts) => {
+                    funtion(posts)
+                });
+
+        }
+
+        function loadPostSelection(posts) {
+
+            console.log("the code is working :D")
+
+            let outSelection = "<option value=''>Select a post</option>";
+            console.log(posts.length)
+            for (let i = 0; i < Object.keys(posts).length; i++) {
+                outSelection += "<option value='" + Object.keys(posts)[i] + "'>" + Object.keys(posts)[i] + "</option>";
+            }
+            document.getElementById("post-list-to-edit").innerHTML = outSelection;
+            document.getElementById("post-list-to-delete").innerHTML = outSelection;
+
+        };
+
+        fetchAndAction(loadPostSelection);
+
+        document.getElementById('show-edit-post').addEventListener('click', () => {
+
+            document.getElementById("edit-post-section").style.display = "block";
+            document.getElementById("show-edit-post").style.display = "none";
+
+        });
+
+        document.getElementById('show-delete-post').addEventListener('click', () => {
+
+            document.getElementById("delete-post-section").style.display = "block";
+            document.getElementById("show-delete-post").style.display = "none";
+
+        });
+
+        document.getElementById('delete-post').addEventListener('click', () => {
+
+            actionFunction = "deletePost";
+
+            downloadActionUploadDropbox();
+            
+            fetchAndAction(loadPostSelection);
 
         });
 
