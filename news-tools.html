@@ -395,7 +395,7 @@
                         mediaArray = news[numId].media;
                         document.getElementById("showMediaArray").innerHTML = mediaArray;
                         for (const i of mediaArray) {
-                            document.getElementById("showMediaInteraction").innerHTML += "<div id='mediaInteraction_" + mediaInteractionID + "'><img src='https://drive.google.com/uc?export=view&id=" + i + "' style='height: 200px;'><br><button type='button' id='removeMediaInteraction" + mediaInteractionID + "' onclick='removeMediaInteractionFunction(this.id)' value=" + mediaInteractionID + ">Remove</button></div>";
+                            document.getElementById("showMediaInteraction").innerHTML += "<div id='mediaInteraction_" + mediaInteractionID + "'><img src='https://i.ibb.co/" + i + "' style='height: 200px;'><br><button type='button' id='removeMediaInteraction" + mediaInteractionID + "' onclick='removeMediaInteractionFunction(this.id)' value=" + mediaInteractionID + ">Remove</button></div>";
                             mediaInteractionID += 1
                         }
                     });
