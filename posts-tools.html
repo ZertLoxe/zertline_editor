@@ -459,9 +459,9 @@
 
                         alert("are you sure you want to delete the '" + document.getElementById("post-list-to-delete").value + "' post?")
 
-                        console.log("post is deleted")
-
                         delete jsonData[document.getElementById("post-list-to-delete").value]
+
+                        fetchAndAction(loadPostSelection);
 
                     };
 
@@ -548,8 +548,6 @@
             actionFunction = "deletePost";
 
             downloadActionUploadDropbox();
-            
-            fetchAndAction(loadPostSelection);
 
         });
 
