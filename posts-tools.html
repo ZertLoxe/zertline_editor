@@ -457,6 +457,8 @@
 
                     } else if (actionFunction == "deletePost") {
 
+                        console.log(jsonData)
+
                         alert("are you sure you want to delete the '" + document.getElementById("post-list-to-delete").value + "' post?")
 
                         delete jsonData[document.getElementById("post-list-to-delete").value]
