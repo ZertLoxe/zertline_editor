@@ -33,6 +33,10 @@
         <input type="text" id="post-title">
         <hr>
 
+        <p>About this post</p>
+        <textarea id="post-about" cols="50" rows="5"></textarea>
+        <hr>
+
         <p>post element structure</p>
         <hr>
         <div>
@@ -213,6 +217,7 @@
         let postElement = [];
         let postElementStructureArray = [];
         let titleElement = null;
+        let aboutElement = null;
         let mediaElement = null;
         let textElement = null;
         let shapeElement = null;
@@ -442,11 +447,13 @@
 
                         postKey = document.getElementById("post-json-key").value;
                         postTitle = document.getElementById("post-title").value;
+                        postAbout = document.getElementById("post-about").value;
 
                         UIDataMessage = "the '" + postTitle + "' post is now in public!!"
 
                         finalPost = {
                             "postTitle": postTitle,
+                            "postAbout": postAbout,
                             "postElements": postElement,
                             "time": [moment().format(), null]
                         };
