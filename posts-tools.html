@@ -1898,6 +1898,10 @@
             postAbout = document.getElementById("post-about").value;
             postCategory = getCategoryChecked();
 
+            let postElementCopy = JSON.parse(JSON.stringify(postElement));
+
+            actionsOnArrayElements(postElementCopy, actionsOnPostPart);
+
             UIDataMessage = "the '" + postTitle + "' post is now in public!!";
 
             finalPost = {
@@ -1905,7 +1909,7 @@
               postCategory: postCategory,
               postAbout: postAbout,
               time: [moment().format(), null],
-              postElements: postElement,
+              postElements: postElementCopy,
             };
 
             postElement = null;
@@ -1929,7 +1933,7 @@
               postCategory: postCategory,
               postAbout: postAbout,
               time: [submitTime, moment().format()],
-              postElements: postElement,
+              postElements: postElementCopy,
             };
 
             postElement = null;
