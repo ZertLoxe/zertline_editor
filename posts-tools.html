@@ -2,565 +2,2200 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="description" content="Unlimit Your Imagination">
-    <meta name="viewport" content="width=device-width, initail-scale=1.0">
-    <meta name="keywords" content="zertline, zertloxe">
-    <meta name="author" content="zertloxe">
+  <meta charset="utf-8" />
+  <meta name="description" content="Unlimit Your Imagination" />
+  <meta name="viewport" content="width=device-width, initail-scale=1.0" />
+  <meta name="keywords" content="zertline, zertloxe" />
+  <meta name="author" content="zertloxe" />
 
-    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs"
-        data-app-key="nx511xzzvb1zelk"></script>
+  <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs"
+    data-app-key="nx511xzzvb1zelk"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.36/moment-timezone-with-data-10-year-range.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.36/moment-timezone-with-data-10-year-range.min.js"></script>
 
-    <title>ZL Posts Tools</title>
+  <title>ZL Posts Tools</title>
 </head>
 
 <body>
-    <div>
-        <button id="generateTokenLink">Generate Token</button>
-        <p id="tokenstat" style="color: red;font-size: x-large;font-weight: bold;">Not ready</p>
-        <p id="submitMessage" style="color: blue;font-size: x-large;font-weight: bold;"></p>
-    </div>
-    <div>
-        <p>Post name key in Json (data name)</p>
-        <input type="text" id="post-json-key">
-        <hr>
+  <div>
+    <button id="generateTokenLink">Generate Token</button>
+    <p id="tokenstat" style="color: red; font-size: x-large; font-weight: bold">
+      Not ready
+    </p>
+    <p id="submitMessage" style="color: blue; font-size: x-large; font-weight: bold"></p>
+  </div>
+  <div>
+    <p>Post name key in Json (data name)</p>
+    <input type="text" id="post-json-key" />
+    <hr />
 
+    <p>Title</p>
+    <input type="text" id="post-title" />
+    <hr />
+
+    <p>Post category</p>
+    <div id="section-category"></div>
+    <hr />
+
+    <p>About this post</p>
+    <textarea id="post-about" cols="50" rows="5"></textarea>
+    <hr />
+
+    <p>post element structure</p>
+    <hr />
+    <div>
+      <p>Title for this post element</p>
+
+      <input type="radio" value="false" name="title-structure" id="title-structure-false" />
+      <label for="title-structure-false">no</label>
+
+      <input type="radio" value="true" name="title-structure" id="title-structure-true" />
+      <label for="title-structure-true">yes</label>
+    </div>
+    <hr />
+    <div>
+      <p>Media for this post element</p>
+
+      <input type="radio" value="0" name="media-structure" id="media-structure-null" />
+      <label for="media-structure-null">no media</label>
+
+      <input type="radio" value="1" name="media-structure" id="media-structure-single" />
+      <label for="media-structure-single">single</label>
+
+      <input type="radio" value="2" name="media-structure" id="media-structure-multiple" />
+      <label for="media-structure-multiple">multiple</label>
+    </div>
+    <hr />
+    <div>
+      <p>Text for this post element</p>
+
+      <input type="radio" value="0" name="text-structure" id="text-structure-null" />
+      <label for="text-structure-null">no text</label>
+
+      <input type="radio" value="1" name="text-structure" id="text-structure-single" />
+      <label for="text-structure-single">single</label>
+
+      <input type="radio" value="2" name="text-structure" id="text-structure-multiple" />
+      <label for="text-structure-multiple">multiple</label>
+    </div>
+    <hr />
+    <button type="button" id="post-tool-reveal-create">
+      Click to start posting
+    </button>
+    <button type="button" id="change-post-structure" style="display: none">
+      Change post structure
+    </button>
+    <hr />
+
+    <div id="post-tools" style="display: none">
+      <div id="title-tool" style="display: none">
         <p>Title</p>
-        <input type="text" id="post-title">
-        <hr>
+        <input type="text" id="title" />
+      </div>
+      <hr />
+      <div id="media-tool" style="display: none">
+        <p>Media</p>
+        <input type="text" size="100" id="media" />
 
-        <p>About this post</p>
-        <textarea id="post-about" cols="50" rows="5"></textarea>
-        <hr>
+        <div id="show-multiple-media"></div>
 
-        <p>post element structure</p>
-        <hr>
-        <div>
-            <p>Title for this post element</p>
-
-            <input type="radio" value=false name="title-structure" id="title-structure-false">
-            <label for="title-structure-false">no</label>
-
-            <input type="radio" value=true name="title-structure" id="title-structure-true">
-            <label for="title-structure-true">yes</label>
+        <div id="multiple-media" style="display: none">
+          <button type="button" id="add-media">Add</button>
+          <button type="button" id="undo-action-media" style="display: none">
+            Undo action
+          </button>
         </div>
-        <hr>
-        <div>
-            <p>Media for this post element</p>
+      </div>
+      <hr />
+      <div id="text-tool" style="display: none">
+        <p>Text</p>
 
-            <input type="radio" value="0" name="media-structure" id="media-structure-null">
-            <label for="media-structure-null">no media</label>
+        <div id="show-multiple-text"></div>
 
-            <input type="radio" value="1" name="media-structure" id="media-structure-single">
-            <label for="media-structure-single">single</label>
+        <textarea id="text" cols="50" rows="10"></textarea>
 
-            <input type="radio" value="2" name="media-structure" id="media-structure-multiple">
-            <label for="media-structure-multiple">multiple</label>
+        <div id="multiple-text" style="display: none">
+          <button type="button" id="add-text">Add</button>
+          <button type="button" id="undo-action-text" style="display: none">
+            Undo action
+          </button>
         </div>
-        <hr>
-        <div>
-            <p>Text for this post element</p>
+      </div>
+      <div id="special-element-shape" style="display: none">
+        <p>Special element shape</p>
 
-            <input type="radio" value="0" name="text-structure" id="text-structure-null">
-            <label for="text-structure-null">no text</label>
+        <input type="radio" value="null" name="element-shape" id="default-shape" />
+        <label for="default-shape">keep it default</label>
 
-            <input type="radio" value="1" name="text-structure" id="text-structure-single">
-            <label for="text-structure-single">single</label>
+        <div id="single-media-text-shape" style="display: none">
+          <input type="radio" value="LM" name="element-shape" id="single-media-text-orientation-left" />
+          <label for="single-media-text-orientation-left">media to the left</label>
 
-            <input type="radio" value="2" name="text-structure" id="text-structure-multiple">
-            <label for="text-structure-multiple">multiple</label>
+          <input type="radio" value="RM" name="element-shape" id="single-media-text-orientation-right" />
+          <label for="single-media-text-orientation-right">media to the right</label>
         </div>
-        <hr>
-        <button type="button" id="post-tool-reveal-create">Click to start posting</button>
-        <hr>
 
-        <div id="post-tools" style="display: none;">
-            <div id="title-tool" style="display: none;">
-                <p>Title</p>
-                <input type="text" id="title">
-            </div>
-            <hr>
-            <div id="media-tool" style="display: none;">
-                <p>Media</p>
-                <input type="text" size="100" id="media">
-
-                <div>
-                    <p>Media type</p>
-
-                    <p id="show-multiple-media"></p>
-
-                    <input type="radio" value="I" name="media-type" id="media-type-image">
-                    <label for="media-type-image">image</label>
-
-                    <input type="radio" value="V" name="media-type" id="media-type-video">
-                    <label for="media-type-video">video</label>
-                </div>
-
-                <div id="multiple-media" style="display: none;">
-                    <button type="button" id="add-media">Add</button>
-                    <button type="button" id="remove-media">Remove</button>
-                </div>
-            </div>
-            <hr>
-            <div id="text-tool" style="display: none;">
-                <p>Text</p>
-
-                <p id="show-multiple-text"></p>
-
-                <textarea id="text" cols="50" rows="10"></textarea>
-
-                <div id="multiple-text" style="display: none;">
-                    <button type="button" id="add-text">Add</button>
-                    <button type="button" id="remove-text">Remove</button>
-                </div>
-            </div>
-            <div id="special-element-shape" style="display: none;">
-                <p>Special element shape</p>
-
-                <input type="radio" value="null" name="element-shape" id="default-shape">
-                <label for="default-shape">keep it default</label>
-
-                <div id="single-media-text-shape" style="display: none;">
-                    <input type="radio" value="LM" name="element-shape" id="single-media-text-orientation-left">
-                    <label for="single-media-text-orientation-left">media to the left</label>
-
-                    <input type="radio" value="RM" name="element-shape" id="single-media-text-orientation-right">
-                    <label for="single-media-text-orientation-right">media to the right</label>
-                </div>
-
-                <div id="multiple-media-shape" style="display: none;">
-                    <input type="radio" value="AG" name="element-shape" id="multiple-media-arrow-guide">
-                    <label for="multiple-media-arrow-guide">arrow guide</label>
-                </div>
-            </div>
-            <hr>
-            <button type="button" id="add-post-part">Add this post part</button>
+        <div id="multiple-media-shape" style="display: none">
+          <input type="radio" value="AG" name="element-shape" id="multiple-media-arrow-guide" />
+          <label for="multiple-media-arrow-guide">slick slider</label>
         </div>
-        <hr>
-        <button type="button" id="submit-post">Submit the post</button>
-        <hr>
-        <button type="button" id="show-edit-post">Click to start editing some posts</button>
-        <div id="edit-post-section" style="display: none;">
-            <select name="post-list-to-edit" id="post-list-to-edit"></select>
-        </div>
-        <hr>
-        <button type="button" id="show-delete-post">Click to start deleting some posts</button>
-        <div id="delete-post-section" style="display: none;">
-            <select name="post-list-to-delete" id="post-list-to-delete"></select>
-            <button type="button" id="delete-post">Delete the post</button>
-        </div>
+      </div>
+      <hr />
+      <button type="button" id="add-post-part">Add this post part</button>
+      <button type="button" id="post-part-save-edit" style="display: none;" value="null">Save changes</button>
+      <button type="button" id="post-part-cancel-edit" style="display: none;">Cancel changes</button>
     </div>
-    <script>
+    <hr />
+    <button type="button" id="submit-post">Submit the post</button>
+    <button type="button" id="save-post">Save the post</button>
+    <hr />
+    <button type="button" id="show-edit-post">
+      Click to start editing some posts
+    </button>
+    <div id="edit-post-section" style="display: none">
+      <select name="post-list-to-edit" id="post-list-to-edit"></select>
+      <button type="button" id="load-edit-post">Load to edit the post</button>
+      <button type="button" id="edit-post" style="display: none;">submit the edited post</button>
+    </div>
+    <hr />
+    <button type="button" id="show-delete-post">
+      Click to start deleting some posts
+    </button>
+    <div id="delete-post-section" style="display: none">
+      <select name="post-list-to-delete" id="post-list-to-delete"></select>
+      <button type="button" id="delete-post">Delete the post</button>
+    </div>
+    <hr />
+    <div id="load-post-file-section">
+      <input type="file" id="fileInput" />
+      <button type="button" id="load-saved-post">Load saved post</button>
+    </div>
+    <hr />
+    <div id="visual-post"></div>
+    <button type="button" id="undo-action-post-part" style="display: none;">Undo action on post part</button>
+  </div>
+  <script>
+    function closeTab() {
+      const currentURL = window.location.href;
 
-        function closeTab() {
-            const currentURL = window.location.href;
+      console.log(currentURL);
 
-            console.log(currentURL);
+      if (
+        currentURL !=
+        "https://zertloxe.github.io/zertline_editor/posts-tools.html"
+      ) {
+        window.close();
+      }
+    }
 
-            if (currentURL != "https://zertloxe.github.io/zertline_editor/posts-tools.html") {
-                window.close();
-            }
+    window.addEventListener("load", closeTab);
+
+    const clientId = "hs2pnr348r68qex";
+    const redirectUri =
+      "https://zertloxe.github.io/zertline_editor/posts-tools.html";
+    let newWindow;
+    let accessToken;
+    let sharedLink;
+
+    let callCount = 0;
+    const maxCallCount = 10;
+    let animationFrameId;
+
+    function captureURL() {
+      if (newWindow) {
+        const newWindowURL = newWindow.location.href;
+        console.log("URL of the new window:", newWindowURL);
+
+        callCount++;
+
+        if (callCount >= maxCallCount) {
+          const url = new URL(newWindowURL);
+          console.log(url);
+          const hash = url.hash;
+          accessToken = hash.split("=")[1].split("&")[0];
+          console.log(accessToken);
+
+          newWindow.close();
+
+          cancelAnimationFrame(animationFrameId);
+
+          document.getElementById("tokenstat").innerHTML =
+            "All good, now start posting!";
+          document.getElementById("tokenstat").style.color = "green";
+        } else {
+          animationFrameId = requestAnimationFrame(captureURL);
+        }
+      }
+    }
+
+    document.getElementById("generateTokenLink").addEventListener("click", () => {
+      const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}`;
+      newWindow = window.open(authUrl, "_blank");
+      if (!newWindow) {
+        alert("Please allow pop-ups to proceed.");
+      }
+      animationFrameId = requestAnimationFrame(captureURL);
+    });
+
+    let postElement = [];
+    let postElementStructureArray = [];
+    let titleElement = null;
+    let aboutElement = null;
+    let mediaElement = null;
+    let textElement = null;
+    let shapeElement = null;
+    let postPart = [];
+
+    function resetPostTools() {
+      document.getElementById("title").value = "";
+      document.getElementById("media").value = "";
+      document.getElementById("text").value = "";
+
+      postElementStructureArray = [];
+      titleElement = null;
+      mediaElement = null;
+      textElement = null;
+      shapeElement = null;
+
+      textSelectionOptions =
+        "<option value=''>Select and Action</option><option value='remove'>Remove</option><option value='edit'>Edit</option>";
+      mediaSelectionOptions =
+        "<option value=''>Select and Action</option><option value='remove'>Remove</option><option value='edit'>Edit</option>";
+
+      multipleTextIndex = 0;
+      multipleMediaIndex = 0;
+
+      document.getElementById("post-tools").style.display = "none";
+      document.getElementById("title-tool").style.display = "none";
+      document.getElementById("media-tool").style.display = "none";
+      document.getElementById("multiple-media").style.display = "none";
+      document.getElementById("text-tool").style.display = "none";
+      document.getElementById("multiple-text").style.display = "none";
+      document.getElementById("special-element-shape").style.display = "none";
+      document.getElementById("single-media-text-shape").style.display =
+        "none";
+      document.getElementById("multiple-media-shape").style.display = "none";
+      document.getElementById("undo-action-media").style.display = "none";
+      document.getElementById("undo-action-text").style.display = "none";
+      document.getElementById("change-post-structure").style.display = "none";
+
+      document.getElementById("show-multiple-media").innerHTML = "";
+      document.getElementById("show-multiple-text").innerHTML = "";
+
+      document.getElementById("post-part-save-edit").style.display = "none";
+      document.getElementById("post-part-cancel-edit").style.display = "none";
+
+      if (
+        document.querySelector('input[name="element-shape"]:checked') != null
+      ) {
+        document.querySelector(
+          'input[name="element-shape"]:checked'
+        ).checked = false;
+      }
+    }
+
+    document.getElementById("post-tool-reveal-create").addEventListener("click", () => {
+      resetPostTools();
+
+      document.getElementById("change-post-structure").style.display =
+        "block";
+
+      postElementStructureArray = [
+        document.querySelector('input[name="title-structure"]:checked')
+          .value,
+        document.querySelector('input[name="media-structure"]:checked')
+          .value,
+        document.querySelector('input[name="text-structure"]:checked')
+          .value,
+      ];
+
+      document.getElementById("post-tools").style.display = "block";
+
+      if (postElementStructureArray[0] == "true") {
+        document.getElementById("title-tool").style.display = "block";
+      }
+
+      if (
+        postElementStructureArray[1] == "1" ||
+        postElementStructureArray[1] == "2"
+      ) {
+        document.getElementById("media-tool").style.display = "block";
+
+        if (postElementStructureArray[1] == "2") {
+          mediaElement = [];
+          document.getElementById("multiple-media").style.display = "block";
+        }
+      }
+
+      if (
+        postElementStructureArray[2] == "1" ||
+        postElementStructureArray[2] == "2"
+      ) {
+        document.getElementById("text-tool").style.display = "block";
+
+        if (postElementStructureArray[2] == "2") {
+          textElement = [];
+          document.getElementById("multiple-text").style.display = "block";
+        }
+      }
+
+      if (
+        postElementStructureArray[1] == "1" &&
+        postElementStructureArray[2] == "1"
+      ) {
+        document.getElementById("special-element-shape").style.display =
+          "block";
+        document.getElementById("single-media-text-shape").style.display =
+          "block";
+      }
+
+      if (postElementStructureArray[1] == "2") {
+        document.getElementById("special-element-shape").style.display =
+          "block";
+        document.getElementById("multiple-media-shape").style.display =
+          "block";
+      }
+    });
+
+    function extractImageId(imageLink) {
+      var url = new URL(imageLink);
+      return url.pathname.substring(1);
+    }
+
+    function extractVideoId(youtubeLink) {
+      const regex =
+        /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+      const match = youtubeLink.match(regex);
+      return match ? match[1] : null;
+    }
+
+    function identifyLinkType(link, mode) {
+      const imageLinkPattern = /^https:\/\/i\.ibb\.co\/([^/]+)\//;
+
+      const youtubePattern =
+        /^(https?:\/\/)?(www\.)?(youtube\.com\/.*(\?v=|\/embed\/|\/v\/|\/watch\?v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+
+      if (mode == "extract") {
+        if (imageLinkPattern.test(link)) {
+          return extractImageId(link);
+        } else if (youtubePattern.test(link)) {
+          return extractVideoId(link);
+        } else {
+          return "none";
+        }
+      } else {
+        if (imageLinkPattern.test(link)) {
+          return "I";
+        } else if (youtubePattern.test(link)) {
+          return "V";
+        } else {
+          return "none";
+        }
+      }
+    }
+
+    function buildVisualPost() {
+      let outPostElements = "";
+
+      for (let i = 0; i < postElement.length; i++) {
+        let outTitle = "";
+        let outMedia = "";
+        let outText = "";
+        let videoControls = "";
+
+        if (postElement[i].postElementStructure[0] === "true") {
+          outTitle =
+            "<div id='post-element-title-holder'><p>" +
+            postElement[i].title +
+            "</p></div>";
         }
 
-        window.addEventListener('load', closeTab);
-
-        const clientId = 'hs2pnr348r68qex';
-        const redirectUri = 'https://zertloxe.github.io/zertline_editor/posts-tools.html';
-        let newWindow;
-        let accessToken;
-        let sharedLink;
-
-        let callCount = 0;
-        const maxCallCount = 10;
-        let animationFrameId;
-
-        function captureURL() {
-            if (newWindow) {
-                const newWindowURL = newWindow.location.href;
-                console.log('URL of the new window:', newWindowURL);
-
-                callCount++;
-
-                if (callCount >= maxCallCount) {
-                    const url = new URL(newWindowURL);
-                    console.log(url);
-                    const hash = url.hash;
-                    accessToken = hash.split('=')[1].split('&')[0];
-                    console.log(accessToken);
-
-                    newWindow.close();
-
-                    cancelAnimationFrame(animationFrameId);
-
-                    document.getElementById("tokenstat").innerHTML = "All good, now start posting!";
-                    document.getElementById("tokenstat").style.color = "green";
-
-                } else {
-                    animationFrameId = requestAnimationFrame(captureURL);
-                }
+        if (postElement[i].postElementStructure[1] === "2") {
+          for (let j = 0; j < postElement[i].media.length; j++) {
+            if (postElement[i].media[j][0] === "I") {
+              outMedia +=
+                "<img src='https://i.ibb.co/" +
+                postElement[i].media[j][1] +
+                "' id='post-element-image' class='media-item' loading='lazy' style='height: 100px;'>";
+            } else {
+              outMedia +=
+                "<iframe id='post-element-video' class='media-item' src='https://www.youtube.com/embed/" +
+                postElement[i].media[j][1] +
+                "?rel=0&modestbranding=1' frameborder='0' allowfullscreen></iframe>";
             }
-        };
+          }
+        } else if (postElement[i].postElementStructure[1] === "1") {
+          if (postElement[i].media[0] === "I") {
+            outMedia =
+              "<img src='https://i.ibb.co/" +
+              postElement[i].media[1] +
+              "' id='post-element-image' class='media-item' loading='lazy' style='height: 100px;'>";
+          } else {
+            outMedia =
+              "<iframe id='post-element-video' class='media-item' src='https://www.youtube.com/embed/" +
+              postElement[i].media[1] +
+              "?rel=0&modestbranding=1' frameborder='0' allowfullscreen></iframe>";
+          }
+        }
 
-        document.getElementById('generateTokenLink').addEventListener('click', () => {
-            const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}`;
-            newWindow = window.open(authUrl, '_blank');
-            if (!newWindow) {
-                alert('Please allow pop-ups to proceed.');
+        if (postElement[i].postElementStructure[2] === "2") {
+          for (let j = 0; j < postElement[i].text.length; j++) {
+            outText += "<p>" + postElement[i].text[j] + "</p>";
+          }
+        } else if (postElement[i].postElementStructure[2] === "1") {
+          outText = "<p>" + postElement[i].text + "</p>";
+        }
+
+        outPostElements +=
+          "<div class='post-element-part'><div class='visual-post-element-part'><div class='data-post-part-object' data-object='" + JSON.stringify(postElement[i]) + "'></div>" +
+          outTitle +
+          "<div id='post-element-media-holder'>" +
+          outMedia +
+          "</div><div id='post-element-text-holder'>" +
+          outText +
+          "</div></div><select class='selection-action-on-post-part'></select><button type='button' class='execute-on-post-part' value='" +
+          multiplePostPartIndex +
+          "'>Execute</button><hr></div>";
+
+        document.getElementById("visual-post").innerHTML = outPostElements;
+
+        postPartSelectionOptions +=
+          "<option value='" +
+          multiplePostPartIndex +
+          "'>Move to " +
+          multiplePostPartIndex +
+          "</option>";
+
+        document
+          .querySelectorAll(".selection-action-on-post-part")
+          .forEach((selection) => {
+            selection.innerHTML = postPartSelectionOptions;
+          });
+
+        multiplePostPartIndex++;
+      }
+    }//////////////////////////////////need rework it is outdated and not used///////////////////////////////////
+
+    let multipleMediaIndex = 0;
+    let actionsOnMedia = [];
+    let removedMedia = [];
+    let editedMedia = [];
+    let mediaSelectionOptions =
+      "<option value=''>Select and Action</option><option value='remove'>Remove</option><option value='edit'>Edit</option>";
+
+    function insertCodeOnMediaTool() {
+      document.querySelectorAll(".shown-media-holder").forEach((element) => {
+        let button = element.querySelector("button");
+        let selection = element.querySelector("select");
+        let buttonSaveEdit = element.querySelector(".save-edited-media");
+        let buttonCancelEdit = element.querySelector(".cancel-edited-media");
+
+        button.addEventListener("click", () => {
+          if (selection.value == "") {
+            console.error("please select a valid action");
+          } else if (selection.value == "remove") {
+            document.getElementById("undo-action-media").style.display =
+              "block";
+
+            removedMedia.push(element);
+
+            element.remove();
+
+            actionsOnMedia.push(["R", button.value]);
+
+            multipleMediaIndex--;
+
+            mediaSelectionOptions = mediaSelectionOptions.replace(
+              "<option value='" +
+              multipleMediaIndex +
+              "'>Move to " +
+              multipleMediaIndex +
+              "</option>",
+              ""
+            );
+
+            document
+              .querySelectorAll(".selection-action-on-media")
+              .forEach((selection) => {
+                selection.innerHTML = mediaSelectionOptions;
+              });
+          } else if (selection.value == "edit") {
+            button.style.display = "none";
+            selection.style.display = "none";
+            element.querySelector(".media-to-edit").style.display = "block";
+            buttonSaveEdit.style.display = "block";
+            buttonCancelEdit.style.display = "block";
+          } else {
+            element.remove();
+
+            document
+              .getElementById("show-multiple-media")
+              .insertBefore(
+                element,
+                document.getElementById("show-multiple-media").children[
+                selection.value
+                ]
+              );
+
+            if (button.value != selection.value) {
+              document.getElementById("undo-action-media").style.display =
+                "block";
+              actionsOnMedia.push(["M", button.value, selection.value]);
             }
-            animationFrameId = requestAnimationFrame(captureURL);
+          }
+
+          console.log(actionsOnMedia);
+
+          let executeMediaButtonValue = 0;
+
+          document
+            .querySelectorAll(".shown-media-holder")
+            .forEach((buttonElement) => {
+              buttonElement.querySelector(".execute-on-media").value =
+                executeMediaButtonValue;
+              buttonElement.querySelector(".save-edited-media").value =
+                executeMediaButtonValue;
+              buttonElement.querySelector(".cancel-edited-media").value =
+                executeMediaButtonValue;
+              buttonElement.value = executeMediaButtonValue;
+              executeMediaButtonValue++;
+            });
+        });
+        buttonSaveEdit.addEventListener("click", () => {
+          editedMedia.push(
+            buttonSaveEdit.parentElement.querySelector("p").innerHTML
+          );
+          buttonSaveEdit.parentElement.querySelector("p").innerHTML =
+            buttonSaveEdit.parentElement.querySelector(
+              ".media-to-edit"
+            ).value;
+
+          if (
+            identifyLinkType(
+              buttonSaveEdit.parentElement.querySelector(".media-to-edit")
+                .value,
+              "type"
+            ) == "I"
+          ) {
+            buttonSaveEdit.parentElement.querySelector(
+              ".held-media"
+            ).innerHTML =
+              "<img src='https://i.ibb.co/" +
+              identifyLinkType(
+                buttonSaveEdit.parentElement.querySelector(".media-to-edit")
+                  .value,
+                "extract"
+              ) +
+              "' id='post-element-image' class='media-item' loading='lazy' style='height: 100px;'>";
+          } else {
+            buttonSaveEdit.parentElement.querySelector(
+              ".held-media"
+            ).innerHTML =
+              "<iframe id='post-element-video' class='media-item' src='https://www.youtube.com/embed/" +
+              identifyLinkType(
+                buttonSaveEdit.parentElement.querySelector(".media-to-edit")
+                  .value,
+                "extract"
+              ) +
+              "?rel=0&modestbranding=1' frameborder='0' allowfullscreen></iframe>";
+          }
+
+          actionsOnMedia.push([
+            "E",
+            buttonSaveEdit.value,
+            [
+              identifyLinkType(
+                buttonSaveEdit.parentElement.querySelector(".media-to-edit")
+                  .value,
+                "type"
+              ),
+              identifyLinkType(
+                buttonSaveEdit.parentElement.querySelector(".media-to-edit")
+                  .value,
+                "extract"
+              ),
+            ],
+          ]);
+
+          button.style.display = "block";
+          selection.style.display = "block";
+          element.querySelector(".media-to-edit").style.display = "none";
+          buttonSaveEdit.style.display = "none";
+          buttonCancelEdit.style.display = "none";
+
+          document.getElementById("undo-action-media").style.display =
+            "block";
+        });
+        buttonCancelEdit.addEventListener("click", () => {
+          buttonSaveEdit.parentElement.querySelector(".media-to-edit").value =
+            buttonSaveEdit.parentElement.querySelector("p").innerHTML;
+
+          button.style.display = "block";
+          selection.style.display = "block";
+          element.querySelector(".media-to-edit").style.display = "none";
+          buttonSaveEdit.style.display = "none";
+          buttonCancelEdit.style.display = "none";
+        });
+      });
+    };
+
+    document.getElementById("add-media").addEventListener("click", () => {
+      let mediaLink = document.getElementById("media").value;
+      let mediaLinkEnd = identifyLinkType(
+        document.getElementById("media").value,
+        "extract"
+      );
+      let mediaType = identifyLinkType(
+        document.getElementById("media").value,
+        "type"
+      );
+
+      console.log(mediaLinkEnd);
+      console.log(mediaType);
+
+      mediaElement.push([mediaType, mediaLinkEnd]);
+
+      console.log(mediaElement);
+
+      document.getElementById("media").value = "";
+
+      let mediaElementPart = null;
+
+      if (mediaType == "I") {
+        mediaElementPart =
+          "<img src='https://i.ibb.co/" +
+          mediaLinkEnd +
+          "' id='post-element-image' class='media-item' loading='lazy' style='height: 100px;'>";
+      } else {
+        mediaElementPart =
+          "<iframe id='post-element-video' class='media-item' src='https://www.youtube.com/embed/" +
+          mediaLinkEnd +
+          "?rel=0&modestbranding=1' frameborder='0' allowfullscreen></iframe>";
+      }
+
+      document.getElementById("show-multiple-media").innerHTML +=
+        "<div class='shown-media-holder'><div class='held-media'>" +
+        mediaElementPart +
+        "</div><p style='display: none;'>" +
+        mediaLink +
+        "</p><input type='text' size='100' class='media-to-edit' style='display: none;' value='" +
+        mediaLink +
+        "'><select class='selection-action-on-media'></select><button type='button' class='execute-on-media' value='" +
+        multipleMediaIndex +
+        "'>Execute</button><button type='button' class='save-edited-media' value='" +
+        multipleMediaIndex +
+        "' style='display: none;'>Save</button><button type='button' class='cancel-edited-media' value='" +
+        multipleMediaIndex +
+        "' style='display: none;'>Cancel</button></div>";
+
+      mediaSelectionOptions +=
+        "<option value='" +
+        multipleMediaIndex +
+        "'>Move to " +
+        multipleMediaIndex +
+        "</option>";
+
+      document
+        .querySelectorAll(".selection-action-on-media")
+        .forEach((selection) => {
+          selection.innerHTML = mediaSelectionOptions;
         });
 
-        let postElement = [];
-        let postElementStructureArray = [];
-        let titleElement = null;
-        let aboutElement = null;
-        let mediaElement = null;
-        let textElement = null;
-        let shapeElement = null;
-        let postPart = [];
+      multipleMediaIndex++;
 
-        function resetPostTools() {
+      insertCodeOnMediaTool();
+    });
 
-            document.getElementById("title").value = '';
-            document.getElementById("media").value = '';
-            document.getElementById("text").value = '';
+    document.getElementById("undo-action-media").addEventListener("click", () => {
+      if (actionsOnMedia.length <= 1) {
+        document.getElementById("undo-action-media").style.display = "none";
+      }
 
-            postElementStructureArray = [];
-            titleElement = null;
+      if (actionsOnMedia[actionsOnMedia.length - 1][0] == "R") {
+        document.getElementById("show-multiple-media").insertBefore(removedMedia[removedMedia.length - 1], document.getElementById("show-multiple-media").children[actionsOnMedia[actionsOnMedia.length - 1][1]]);
+
+        actionsOnMedia.pop(actionsOnMedia.length - 1);
+        removedMedia.pop(removedMedia.length - 1);
+
+        mediaSelectionOptions += "<option value='" + multipleMediaIndex + "'>Move to " + multipleMediaIndex + "</option>";
+
+        document.querySelectorAll(".selection-action-on-media").forEach((selection) => {
+          selection.innerHTML = mediaSelectionOptions;
+        });
+
+        multipleMediaIndex++;
+      } else if (actionsOnMedia[actionsOnMedia.length - 1][0] == "E") {
+        let undoElement = document.getElementById("show-multiple-media").children[actionsOnMedia[actionsOnMedia.length - 1][1]];
+
+        undoElement.querySelector("p").innerHTML = editedMedia[editedMedia.length - 1];
+        undoElement.querySelector(".media-to-edit").value = editedMedia[editedMedia.length - 1];
+
+        if (identifyLinkType(editedMedia[editedMedia.length - 1], "type") == "I") {
+          undoElement.querySelector(".held-media").innerHTML =
+            "<img src='https://i.ibb.co/" + identifyLinkType(editedMedia[editedMedia.length - 1], "extract") +
+            "' id='post-element-image' class='media-item' loading='lazy' style='height: 100px;'>";
+        } else {
+          undoElement.querySelector(".held-media").innerHTML =
+            "<iframe id='post-element-video' class='media-item' src='https://www.youtube.com/embed/" +
+            identifyLinkType(editedMedia[editedMedia.length - 1], "extract") +
+            "?rel=0&modestbranding=1' frameborder='0' allowfullscreen></iframe>";
+        }
+
+        editedMedia.pop(editedMedia.length - 1);
+        actionsOnMedia.pop(actionsOnMedia.length - 1);
+      } else {
+        let elementToMoveBack = document.getElementById(
+          "show-multiple-Media"
+        ).children[actionsOnMedia[actionsOnMedia.length - 1][2]];
+
+        elementToMoveBack.remove();
+
+        document
+          .getElementById("show-multiple-media")
+          .insertBefore(
+            elementToMoveBack,
+            document.getElementById("show-multiple-media").children[
+            actionsOnMedia[actionsOnMedia.length - 1][1]
+            ]
+          );
+
+        actionsOnMedia.pop(actionsOnMedia.length - 1);
+      }
+
+      let executeMediaButtonValue = 0;
+
+      document
+        .querySelectorAll(".execute-on-media")
+        .forEach((buttonElement) => {
+          buttonElement.value = executeMediaButtonValue;
+          executeMediaButtonValue++;
+        });
+    });
+
+    let multipleTextIndex = 0;
+    let actionsOnText = [];
+    let removedText = [];
+    let editedText = [];
+    let textSelectionOptions =
+      "<option value=''>Select and Action</option><option value='remove'>Remove</option><option value='edit'>Edit</option>";
+
+    function insertCodeOnTextTool() {
+      document.querySelectorAll(".shown-text-holder").forEach((element) => {
+        let button = element.querySelector(".execute-on-text");
+        let selection = element.querySelector("select");
+        let buttonSaveEdit = element.querySelector(".save-edited-text");
+        let buttonCancelEdit = element.querySelector(".cancel-edited-text");
+
+        button.addEventListener("click", () => {
+          if (selection.value == "") {
+            console.error("please select a valid action");
+          } else if (selection.value == "remove") {
+            document.getElementById("undo-action-text").style.display =
+              "block";
+
+            removedText.push(element);
+
+            element.remove();
+
+            actionsOnText.push(["R", button.value]);
+
+            multipleTextIndex--;
+
+            textSelectionOptions = textSelectionOptions.replace(
+              "<option value='" +
+              multipleTextIndex +
+              "'>Move to " +
+              multipleTextIndex +
+              "</option>",
+              ""
+            );
+
+            document
+              .querySelectorAll(".selection-action-on-text")
+              .forEach((selection) => {
+                selection.innerHTML = textSelectionOptions;
+              });
+          } else if (selection.value == "edit") {
+            button.style.display = "none";
+            selection.style.display = "none";
+            element.querySelector("p").style.display = "none";
+            element.querySelector(".text-to-edit").style.display = "block";
+            buttonSaveEdit.style.display = "block";
+            buttonCancelEdit.style.display = "block";
+          } else {
+            element.remove();
+
+            document
+              .getElementById("show-multiple-text")
+              .insertBefore(
+                element,
+                document.getElementById("show-multiple-text").children[
+                selection.value
+                ]
+              );
+
+            if (button.value != selection.value) {
+              document.getElementById("undo-action-text").style.display =
+                "block";
+              actionsOnText.push(["M", button.value, selection.value]);
+            }
+          }
+
+          console.log(actionsOnText);
+
+          let executeTextButtonValue = 0;
+
+          document
+            .querySelectorAll(".shown-text-holder")
+            .forEach((buttonElement) => {
+              buttonElement.querySelector(".execute-on-text").value =
+                executeTextButtonValue;
+              buttonElement.querySelector(".save-edited-text").value =
+                executeTextButtonValue;
+              buttonElement.querySelector(".cancel-edited-text").value =
+                executeTextButtonValue;
+              executeTextButtonValue++;
+            });
+        });
+
+        buttonSaveEdit.addEventListener("click", () => {
+          editedText.push(
+            buttonSaveEdit.parentElement.querySelector("p").innerHTML
+          );
+          buttonSaveEdit.parentElement.querySelector("p").innerHTML =
+            buttonSaveEdit.parentElement.querySelector(".text-to-edit").value;
+          actionsOnText.push([
+            "E",
+            buttonSaveEdit.value,
+            buttonSaveEdit.parentElement.querySelector(".text-to-edit").value,
+          ]);
+
+          button.style.display = "block";
+          selection.style.display = "block";
+          element.querySelector("p").style.display = "block";
+          element.querySelector(".text-to-edit").style.display = "none";
+          buttonSaveEdit.style.display = "none";
+          buttonCancelEdit.style.display = "none";
+
+          document.getElementById("undo-action-text").style.display = "block";
+        });
+        buttonCancelEdit.addEventListener("click", () => {
+          buttonSaveEdit.parentElement.querySelector(".text-to-edit").value =
+            buttonSaveEdit.parentElement.querySelector("p").innerHTML;
+
+          button.style.display = "block";
+          selection.style.display = "block";
+          element.querySelector("p").style.display = "block";
+          element.querySelector(".text-to-edit").style.display = "none";
+          buttonSaveEdit.style.display = "none";
+          buttonCancelEdit.style.display = "none";
+        });
+      });
+    };
+
+    document.getElementById("add-text").addEventListener("click", () => {
+      let textElementPart = document.getElementById("text").value;
+
+      console.log(textElementPart);
+
+      textElement.push(textElementPart);
+
+      console.log(textElement);
+
+      document.getElementById("text").value = "";
+      document.getElementById("show-multiple-text").innerHTML +=
+        "<div class='shown-text-holder'><p>" +
+        textElementPart +
+        "</p><textarea class='text-to-edit' cols='50' rows='10' style='display: none;'>" +
+        textElementPart +
+        "</textarea><select class='selection-action-on-text'></select><button type='button' class='execute-on-text' value='" +
+        multipleTextIndex +
+        "'>Execute</button><button type='button' class='save-edited-text' value='" +
+        multipleTextIndex +
+        "' style='display: none;'>Save</button><button type='button' class='cancel-edited-text' value='" +
+        multipleTextIndex +
+        "' style='display: none;'>Cancel</button></div>";
+
+      textSelectionOptions +=
+        "<option value='" +
+        multipleTextIndex +
+        "'>Move to " +
+        multipleTextIndex +
+        "</option>";
+
+      document
+        .querySelectorAll(".selection-action-on-text")
+        .forEach((selection) => {
+          selection.innerHTML = textSelectionOptions;
+        });
+
+      multipleTextIndex++;
+
+      insertCodeOnTextTool();
+    });
+
+    document.getElementById("undo-action-text").addEventListener("click", () => {
+      if (actionsOnText.length <= 1) {
+        document.getElementById("undo-action-text").style.display = "none";
+      }
+
+      if (actionsOnText[actionsOnText.length - 1][0] == "R") {
+        document
+          .getElementById("show-multiple-text")
+          .insertBefore(
+            removedText[removedText.length - 1],
+            document.getElementById("show-multiple-text").children[
+            actionsOnText[actionsOnText.length - 1][1]
+            ]
+          );
+
+        actionsOnText.pop(actionsOnText.length - 1);
+        removedText.pop(removedText.length - 1);
+
+        textSelectionOptions +=
+          "<option value='" +
+          multipleTextIndex +
+          "'>Move to " +
+          multipleTextIndex +
+          "</option>";
+
+        document
+          .querySelectorAll(".selection-action-on-text")
+          .forEach((selection) => {
+            selection.innerHTML = textSelectionOptions;
+          });
+
+        multipleTextIndex++;
+      } else if (actionsOnText[actionsOnText.length - 1][0] == "E") {
+        let undoElement =
+          document.getElementById("show-multiple-text").children[
+          actionsOnText[actionsOnText.length - 1][1]
+          ];
+
+        undoElement.querySelector("p").innerHTML =
+          editedText[editedText.length - 1];
+        undoElement.querySelector(".text-to-edit").value =
+          editedText[editedText.length - 1];
+
+        editedText.pop(editedText.length - 1);
+        actionsOnText.pop(actionsOnText.length - 1);
+      } else {
+        let elementToMoveBack =
+          document.getElementById("show-multiple-text").children[
+          actionsOnText[actionsOnText.length - 1][2]
+          ];
+
+        elementToMoveBack.remove();
+
+        document
+          .getElementById("show-multiple-text")
+          .insertBefore(
+            elementToMoveBack,
+            document.getElementById("show-multiple-text").children[
+            actionsOnText[actionsOnText.length - 1][1]
+            ]
+          );
+
+        actionsOnText.pop(actionsOnText.length - 1);
+      }
+
+      let executeTextButtonValue = 0;
+
+      document
+        .querySelectorAll(".execute-on-text")
+        .forEach((buttonElement) => {
+          buttonElement.value = executeTextButtonValue;
+          executeTextButtonValue++;
+        });
+    });
+
+    function actionsOnArrayElements(sourceArray, actionsArray) {
+      for (let element = 0; element < actionsArray.length; element++) {
+        if (actionsArray[element][0] == "M") {
+          if (actionsArray[element][2] >= sourceArray.length) {
+            var k = actionsArray[element][2] - sourceArray.length + 1;
+            while (k--) {
+              sourceArray.push(undefined);
+            }
+          }
+          sourceArray.splice(
+            actionsArray[element][2],
+            0,
+            sourceArray.splice(actionsArray[element][1], 1)[0]
+          );
+        } else if (actionsArray[element][0] == "E") {
+          sourceArray[actionsArray[element][1]] = actionsArray[element][2];
+        } else {
+          console.log(actionsArray[element][1]);
+          if (
+            actionsArray[element][1] > -1 &&
+            actionsArray[element][1] < sourceArray.length
+          ) {
+            sourceArray.splice(actionsArray[element][1], 1);
+          }
+        }
+      }
+    }
+
+    document
+      .getElementById("change-post-structure")
+      .addEventListener("click", () => {
+        let postElementStructureArrayOld = JSON.parse(JSON.stringify(postElementStructureArray));
+
+        postElementStructureArray = [
+          document.querySelector('input[name="title-structure"]:checked').value,
+          document.querySelector('input[name="media-structure"]:checked').value,
+          document.querySelector('input[name="text-structure"]:checked').value,
+        ];
+
+        console.log(postElementStructureArray);
+        console.log(postElementStructureArrayOld);
+
+        if (postElementStructureArray[0] == "false") {
+          document.getElementById("title").value = "";
+          titleElement = null;
+          document.getElementById("title-tool").style.display = "none";
+        } else {
+          document.getElementById("title-tool").style.display = "block";
+        }
+
+        if (postElementStructureArray[1] != postElementStructureArrayOld[1]) {
+          if (postElementStructureArray[1] == "0") {
+            document.getElementById("media").value = "";
+            document.getElementById("show-multiple-media").innerHTML = "";
             mediaElement = null;
-            textElement = null;
-            shapeElement = null;
-
-            document.getElementById("post-tools").style.display = "none";
-            document.getElementById("title-tool").style.display = "none";
+            actionsOnMedia = [];
+            removedMedia = [];
+            editedMedia = [];
             document.getElementById("media-tool").style.display = "none";
             document.getElementById("multiple-media").style.display = "none";
+            document.getElementById("undo-action-media").style.display =
+              "none";
+          } else if (postElementStructureArray[1] == "1") {
+            document.getElementById("show-multiple-media").innerHTML = "";
+            mediaElement = null;
+            actionsOnMedia = [];
+            removedMedia = [];
+            editedMedia = [];
+            document.getElementById("media-tool").style.display = "block";
+            document.getElementById("multiple-media").style.display = "none";
+            document.getElementById("undo-action-media").style.display =
+              "none";
+          } else {
+            document.getElementById("show-multiple-media").innerHTML = "";
+            mediaElement = [];
+            actionsOnMedia = [];
+            removedMedia = [];
+            editedMedia = [];
+            document.getElementById("media-tool").style.display = "block";
+            document.getElementById("multiple-media").style.display = "block";
+            document.getElementById("undo-action-media").style.display =
+              "none";
+          }
+        }
+
+        if (postElementStructureArray[2] != postElementStructureArrayOld[2]) {
+          if (postElementStructureArray[2] == "0") {
+            document.getElementById("text").value = "";
+            document.getElementById("show-multiple-text").innerHTML = "";
+            textElement = null;
+            actionsOnText = [];
+            removedText = [];
+            editedText = [];
             document.getElementById("text-tool").style.display = "none";
             document.getElementById("multiple-text").style.display = "none";
-            document.getElementById("special-element-shape").style.display = "none";
-            document.getElementById("single-media-text-shape").style.display = "none";
-            document.getElementById("multiple-media-shape").style.display = "none";
-
-
-            document.getElementById("show-multiple-media").innerHTML = '';
-            document.getElementById("show-multiple-text").innerHTML = '';
-
-            if (document.querySelector('input[name="media-type"]:checked') != null) {
-                document.querySelector('input[name="media-type"]:checked').checked = false;
-            };
-
-            if (document.querySelector('input[name="element-shape"]:checked') != null) {
-                document.querySelector('input[name="element-shape"]:checked').checked = false;
-            };
-
-        };
-
-        document.getElementById('post-tool-reveal-create').addEventListener('click', () => {
-
-            resetPostTools();
-
-            postElementStructureArray = [document.querySelector('input[name="title-structure"]:checked').value, document.querySelector('input[name="media-structure"]:checked').value, document.querySelector('input[name="text-structure"]:checked').value];
-
-            document.getElementById("post-tools").style.display = "block";
-
-            if (postElementStructureArray[0] == "true") {
-                document.getElementById("title-tool").style.display = "block";
-            };
-
-            if (postElementStructureArray[1] == "1" || postElementStructureArray[1] == '2') {
-
-                document.getElementById("media-tool").style.display = "block";
-
-                if (postElementStructureArray[1] == "2") {
-                    mediaElement = [];
-                    document.getElementById("multiple-media").style.display = "block";
-                };
-            };
-
-            if (postElementStructureArray[2] == "1" || postElementStructureArray[2] == '2') {
-
-                document.getElementById("text-tool").style.display = "block";
-
-                if (postElementStructureArray[2] == "2") {
-                    textElement = [];
-                    document.getElementById("multiple-text").style.display = "block";
-                };
-            };
-
-            if (postElementStructureArray[1] == "1" && postElementStructureArray[2] == '1') {
-
-                document.getElementById("special-element-shape").style.display = "block";
-                document.getElementById("single-media-text-shape").style.display = "block";
-
-            };
-
-            if (postElementStructureArray[1] == "2") {
-
-                document.getElementById("special-element-shape").style.display = "block";
-                document.getElementById("multiple-media-shape").style.display = "block";
-
-            };
-
-        });
-
-        function extractImageId(imageLink) {
-            var url = new URL(imageLink)
-            return url.pathname.substring(1);
-        };
-
-        function extractVideoId(youtubeLink) {
-            const regex = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
-            const match = youtubeLink.match(regex);
-            return match ? match[1] : null;
-        }
-
-        function identifyLinkType(link) {
-
-            const imageLinkPattern = /^https:\/\/i\.ibb\.co\/([^/]+)\//;
-
-            const youtubePattern = /^(https?:\/\/)?(www\.)?(youtube\.com\/.*(\?v=|\/embed\/|\/v\/|\/watch\?v=)|youtu\.be\/)([^"&?\/\s]{11})/;
-
-            if (imageLinkPattern.test(link)) {
-                return extractImageId(link);
-            } else if (youtubePattern.test(link)) {
-                return extractVideoId(link);
-            } else {
-                return 'none';
+            document.getElementById("undo-action-text").style.display =
+              "none";
+          } else if (postElementStructureArray[2] == "1") {
+            if (
+              postElementStructureArray[2] == "1" &&
+              postElementStructureArrayOld[2] == "2"
+            ) {
+              let elementCluster = "";
+              for (let element of textElement) {
+                elementCluster += element + " ";
+              }
+              document.getElementById("text").value = elementCluster.slice(0, -1);
             }
+
+            document.getElementById("show-multiple-text").innerHTML = "";
+            textElement = null;
+            actionsOnText = [];
+            removedText = [];
+            editedText = [];
+            document.getElementById("text-tool").style.display = "block";
+            document.getElementById("multiple-text").style.display = "none";
+            document.getElementById("undo-action-text").style.display = "none";
+          } else {
+            document.getElementById("show-multiple-text").innerHTML = "";
+            textElement = [];
+            actionsOnText = [];
+            removedText = [];
+            editedText = [];
+            document.getElementById("text-tool").style.display = "block";
+            document.getElementById("multiple-text").style.display = "block";
+            document.getElementById("undo-action-text").style.display = "none";
+          }
         }
 
-        document.getElementById('add-media').addEventListener('click', () => {
+        if (
+          JSON.stringify(postElementStructureArray) !==
+          JSON.stringify(postElementStructureArrayOld)
+        ) {
+          if (
+            document.querySelector('input[name="element-shape"]:checked') !=
+            null
+          ) {
+            document.querySelector(
+              'input[name="element-shape"]:checked'
+            ).checked = false;
+          }
+        }
 
-            let mediaLinkEnd = identifyLinkType(document.getElementById("media").value);
-            let mediaType = document.querySelector('input[name="media-type"]:checked').value;
+        document.getElementById("special-element-shape").style.display =
+          "none";
+        document.getElementById("multiple-media-shape").style.display =
+          "none";
+        document.getElementById("single-media-text-shape").style.display =
+          "none";
 
-            console.log(mediaLinkEnd);
-            console.log(mediaType);
+        if (
+          postElementStructureArray[1] == "1" &&
+          postElementStructureArray[2] == "1"
+        ) {
+          document.getElementById("special-element-shape").style.display =
+            "block";
+          document.getElementById("single-media-text-shape").style.display =
+            "block";
+        }
 
-            mediaElement.push([mediaType, mediaLinkEnd]);
+        if (postElementStructureArray[1] == "2") {
+          document.getElementById("special-element-shape").style.display =
+            "block";
+          document.getElementById("multiple-media-shape").style.display =
+            "block";
+        }
+      });
 
-            console.log(mediaElement);
+    function loadPostPartOnEdit(postPartElement) {
+      resetPostTools();
 
-            document.getElementById("media").value = '';
-            document.getElementById("show-multiple-media").innerHTML = mediaElement;
+      document.getElementById("change-post-structure").style.display =
+        "block";
+
+      document.getElementById("post-tools").style.display = "block";
+
+      if (postPartElement.postElementStructure[0] == "true") {
+        document.getElementById("title-tool").style.display = "block";
+      }
+
+      if (
+        postPartElement.postElementStructure[1] == "1" ||
+        postPartElement.postElementStructure[1] == "2"
+      ) {
+        document.getElementById("media-tool").style.display = "block";
+
+        if (postPartElement.postElementStructure[1] == "2") {
+          mediaElement = [];
+          document.getElementById("multiple-media").style.display = "block";
+        }
+      }
+
+      if (
+        postPartElement.postElementStructure[2] == "1" ||
+        postPartElement.postElementStructure[2] == "2"
+      ) {
+        document.getElementById("text-tool").style.display = "block";
+
+        if (postPartElement.postElementStructure[2] == "2") {
+          textElement = [];
+          document.getElementById("multiple-text").style.display = "block";
+        }
+      }
+
+      if (
+        postPartElement.postElementStructure[1] == "1" &&
+        postPartElement.postElementStructure[2] == "1"
+      ) {
+        document.getElementById("special-element-shape").style.display =
+          "block";
+        document.getElementById("single-media-text-shape").style.display =
+          "block";
+      }
+
+      if (postPartElement.postElementStructure[1] == "2") {
+        document.getElementById("special-element-shape").style.display =
+          "block";
+        document.getElementById("multiple-media-shape").style.display =
+          "block";
+      }
+
+      if (postPartElement.postElementStructure[0] == "true") {
+        document.getElementById("title-structure-true").checked = true;
+        document.getElementById("title").value = postPartElement.title;
+      } else {
+        document.getElementById("title-structure-false").checked = true;
+      };
+
+      if (postPartElement.postElementStructure[1] == "1") {
+        document.getElementById("media-structure-single").checked = true;
+        if (postPartElement.media[0] == "V") {
+          document.getElementById("media").value = "https://www.youtube.com/watch?v=" + postPartElement.media[1];
+        } else {
+          document.getElementById("media").value = "https://i.ibb.co/" + postPartElement.media[1];
+        }
+      } else if (postPartElement.postElementStructure[1] == "2") {
+        document.getElementById("media-structure-multiple").checked = true;
+
+        for (let elementMedia of postPartElement.media) {
+          let mediaLink
+          let mediaLinkEnd = elementMedia[1];
+          let mediaType = elementMedia[0];
+
+          console.log(mediaLinkEnd);
+          console.log(mediaType);
+
+          mediaElement.push([mediaType, mediaLinkEnd]);
+
+          console.log(mediaElement);
+
+          document.getElementById("media").value = "";
+
+          let mediaElementPart = null;
+
+          if (mediaType == "I") {
+            mediaLink = "https://i.ibb.co/" + mediaLinkEnd
+            mediaElementPart =
+              "<img src='https://i.ibb.co/" +
+              mediaLinkEnd +
+              "' id='post-element-image' class='media-item' loading='lazy' style='height: 100px;'>";
+          } else {
+            mediaLink = "https://www.youtube.com/embed/" + mediaLinkEnd + "?rel=0&modestbranding=1";
+            mediaElementPart =
+              "<iframe id='post-element-video' class='media-item' src='https://www.youtube.com/embed/" +
+              mediaLinkEnd +
+              "?rel=0&modestbranding=1' frameborder='0' allowfullscreen></iframe>";
+          }
+
+          document.getElementById("show-multiple-media").innerHTML +=
+            "<div class='shown-media-holder'><div class='held-media'>" +
+            mediaElementPart +
+            "</div><p style='display: none;'>" +
+            mediaLink +
+            "</p><input type='text' size='100' class='media-to-edit' style='display: none;' value='" +
+            mediaLink +
+            "'><select class='selection-action-on-media'></select><button type='button' class='execute-on-media' value='" +
+            multipleMediaIndex +
+            "'>Execute</button><button type='button' class='save-edited-media' value='" +
+            multipleMediaIndex +
+            "' style='display: none;'>Save</button><button type='button' class='cancel-edited-media' value='" +
+            multipleMediaIndex +
+            "' style='display: none;'>Cancel</button></div>";
+
+          mediaSelectionOptions +=
+            "<option value='" +
+            multipleMediaIndex +
+            "'>Move to " +
+            multipleMediaIndex +
+            "</option>";
+
+          document
+            .querySelectorAll(".selection-action-on-media")
+            .forEach((selection) => {
+              selection.innerHTML = mediaSelectionOptions;
+            });
+
+          multipleMediaIndex++;
+        };
+
+      } else {
+        document.getElementById("media-structure-none").checked = true;
+      };
+
+      if (postPartElement.postElementStructure[2] == "1") {
+
+        document.getElementById("text-structure-single").checked = true;
+        document.getElementById("text").value = postPartElement.text;
+
+      } else if (postPartElement.postElementStructure[2] == "2") {
+
+        document.getElementById("text-structure-multiple").checked = true;
+
+        for (let elementText of postPartElement.text) {
+          let textElementPart = elementText;
+
+          console.log(textElementPart);
+
+          textElement.push(textElementPart);
+
+          console.log(textElement);
+
+          document.getElementById("text").value = "";
+          document.getElementById("show-multiple-text").innerHTML +=
+            "<div class='shown-text-holder'><p>" +
+            textElementPart +
+            "</p><textarea class='text-to-edit' cols='50' rows='10' style='display: none;'>" +
+            textElementPart +
+            "</textarea><select class='selection-action-on-text'></select><button type='button' class='execute-on-text' value='" +
+            multipleTextIndex +
+            "'>Execute</button><button type='button' class='save-edited-text' value='" +
+            multipleTextIndex +
+            "' style='display: none;'>Save</button><button type='button' class='cancel-edited-text' value='" +
+            multipleTextIndex +
+            "' style='display: none;'>Cancel</button></div>";
+
+          textSelectionOptions +=
+            "<option value='" +
+            multipleTextIndex +
+            "'>Move to " +
+            multipleTextIndex +
+            "</option>";
+
+          document
+            .querySelectorAll(".selection-action-on-text")
+            .forEach((selection) => {
+              selection.innerHTML = textSelectionOptions;
+            });
+
+          multipleTextIndex++;
+        };
+
+      } else {
+        document.getElementById("text-structure-none").checked = true;
+      };
+
+      if (postPartElement.elementShape == "LM") {
+        document.getElementById("single-media-text-orientation-left").checked = true;
+      } else if (postPartElement.elementShape == "RM") {
+        document.getElementById("single-media-text-orientation-right").checked = true;
+      } else if (postPartElement.elementShape == "AG") {
+        document.getElementById("multiple-media-arrow-guide").checked = true;
+      } else {
+        document.getElementById("default-shape").checked = true;
+      }
+
+      postElementStructureArray = [
+        document.querySelector('input[name="title-structure"]:checked')
+          .value,
+        document.querySelector('input[name="media-structure"]:checked')
+          .value,
+        document.querySelector('input[name="text-structure"]:checked')
+          .value,
+      ];
+    }
+
+    let multiplePostPartIndex = 0;
+    let actionsOnPostPart = [];
+    let removedPostPart = [];
+    let editedPostPart = [];
+    let postPartSelectionOptions =
+      "<option value=''>Select and Action</option><option value='remove'>Remove</option><option value='edit'>Edit</option>";
+
+    document.getElementById("add-post-part").addEventListener("click", () => {
+      if (postElementStructureArray[0] == "true") {
+        titleElement = document.getElementById("title").value;
+      }
+
+      if (postElementStructureArray[1] == "1") {
+        mediaElement = [
+          identifyLinkType(document.getElementById("media").value, "type"),
+          identifyLinkType(document.getElementById("media").value, "extract"),
+        ];
+      }
+
+      if (postElementStructureArray[1] == "2") {
+        actionsOnArrayElements(mediaElement, actionsOnMedia);
+        actionsOnMedia = [];
+        removedMedia = [];
+        editedMedia = [];
+      }
+
+      if (postElementStructureArray[2] == "1") {
+        textElement = document.getElementById("text").value;
+      }
+
+      if (postElementStructureArray[2] == "2") {
+        actionsOnArrayElements(textElement, actionsOnText);
+        actionsOnText = [];
+        removedText = [];
+        editedText = [];
+      }
+
+      if (
+        (postElementStructureArray[1] == "1" &&
+          postElementStructureArray[2] == "1") ||
+        postElementStructureArray[1] == "2"
+      ) {
+        if (
+          document.querySelector('input[name="element-shape"]:checked')
+            .value == "null"
+        ) {
+          shapeElement = document
+            .getElementById("default-shape")
+            .getAttribute("data-null-value");
+        } else {
+          shapeElement = document.querySelector(
+            'input[name="element-shape"]:checked'
+          ).value;
+        }
+      }
+
+      let postElementPart = {
+        postElementStructure: postElementStructureArray,
+        title: titleElement,
+        media: mediaElement,
+        text: textElement,
+        elementShape: shapeElement,
+      };
+
+      postElement.push(postElementPart);
+
+      console.log(postElement);
+      console.log(shapeElement);
+
+      resetPostTools();
+
+      let outPostElements = "";
+
+      let outTitle = "";
+      let outMedia = "";
+      let outText = "";
+      let videoControls = "";
+
+      if (postElementPart.postElementStructure[0] === "true") {
+        outTitle =
+          "<div id='post-element-title-holder'><p>" +
+          postElementPart.title +
+          "</p></div>";
+      }
+
+      if (postElementPart.postElementStructure[1] === "2") {
+        for (let j = 0; j < postElementPart.media.length; j++) {
+          if (postElementPart.media[j][0] === "I") {
+            outMedia +=
+              "<img src='https://i.ibb.co/" +
+              postElementPart.media[j][1] +
+              "' id='post-element-image' class='media-item' loading='lazy' style='height: 100px;'>";
+          } else {
+            outMedia +=
+              "<iframe id='post-element-video' class='media-item' src='https://www.youtube.com/embed/" +
+              postElementPart.media[j][1] +
+              "?rel=0&modestbranding=1' frameborder='0' allowfullscreen></iframe>";
+          }
+        }
+      } else if (postElementPart.postElementStructure[1] === "1") {
+        if (postElementPart.media[0] === "I") {
+          outMedia =
+            "<img src='https://i.ibb.co/" +
+            postElementPart.media[1] +
+            "' id='post-element-image' class='media-item' loading='lazy' style='height: 100px;'>";
+        } else {
+          outMedia =
+            "<iframe id='post-element-video' class='media-item' src='https://www.youtube.com/embed/" +
+            postElementPart.media[1] +
+            "?rel=0&modestbranding=1' frameborder='0' allowfullscreen></iframe>";
+        }
+      }
+
+      if (postElementPart.postElementStructure[2] === "2") {
+        for (let j = 0; j < postElementPart.text.length; j++) {
+          outText += "<p>" + postElementPart.text[j] + "</p>";
+        }
+      } else if (postElementPart.postElementStructure[2] === "1") {
+        outText = "<p>" + postElementPart.text + "</p>";
+      }
+
+      outPostElements +=
+        "<div class='post-element-part'><div class='visual-post-element-part'><div class='data-post-part-object' data-object='" + JSON.stringify(postElementPart) + "'></div>" +
+        outTitle +
+        "<div id='post-element-media-holder'>" +
+        outMedia +
+        "</div><div id='post-element-text-holder'>" +
+        outText +
+        "</div></div><select class='selection-action-on-post-part'></select><button type='button' class='execute-on-post-part' value='" +
+        multiplePostPartIndex +
+        "'>Execute</button><hr></div>";
+
+      document.getElementById("visual-post").innerHTML += outPostElements;
+
+      postPartSelectionOptions +=
+        "<option value='" +
+        multiplePostPartIndex +
+        "'>Move to " +
+        multiplePostPartIndex +
+        "</option>";
+
+      document
+        .querySelectorAll(".selection-action-on-post-part")
+        .forEach((selection) => {
+          selection.innerHTML = postPartSelectionOptions;
         });
 
-        document.getElementById('remove-media').addEventListener('click', () => {
+      multiplePostPartIndex++;
 
-            mediaElement.pop();
-            document.getElementById("show-multiple-media").innerHTML = mediaElement;
+      loadFunctionOnExecutePostPart()
 
+    });
+
+    let runOnce = true;
+
+    function loadFunctionOnExecutePostPart() {
+
+      document.querySelectorAll(".post-element-part").forEach((element) => {
+        let button = element.querySelector(".execute-on-post-part");
+        let selection = element.querySelector("select");
+        let buttonSaveEdit = document.getElementById("post-part-save-edit");
+        let buttonCancelEdit = document.getElementById("post-part-cancel-edit");
+
+        button.addEventListener("click", () => {
+          if (selection.value == "") {
+            console.error("please select a valid action");
+          } else if (selection.value == "remove") {
+            document.getElementById("undo-action-post-part").style.display =
+              "block";
+
+            removedPostPart.push(element);
+
+            console.log("removed post part", removedPostPart);
+
+            element.remove();
+
+            actionsOnPostPart.push(["R", button.value]);
+
+            multiplePostPartIndex--;
+
+            postPartSelectionOptions = postPartSelectionOptions.replace(
+              "<option value='" +
+              multiplePostPartIndex +
+              "'>Move to " +
+              multiplePostPartIndex +
+              "</option>",
+              ""
+            );
+
+            document
+              .querySelectorAll(".selection-action-on-post-part")
+              .forEach((selection) => {
+                selection.innerHTML = postPartSelectionOptions;
+              });
+          } else if (selection.value == "edit") {
+
+            let objectOfPostPartToEdit = JSON.parse(element.querySelector(".data-post-part-object").getAttribute("data-object"));
+
+            console.log(objectOfPostPartToEdit)
+            loadPostPartOnEdit(objectOfPostPartToEdit);
+
+            insertCodeOnMediaTool();
+            insertCodeOnTextTool();
+
+            postElementStructureArray = objectOfPostPartToEdit.postElementStructure
+            titleElement = objectOfPostPartToEdit.title
+            mediaElement = objectOfPostPartToEdit.media
+            textElement = objectOfPostPartToEdit.text
+            shapeElement = objectOfPostPartToEdit.elementShape
+
+            console.log(postElementStructureArray, titleElement, mediaElement, textElement, shapeElement)
+
+            document.getElementById("post-part-save-edit").style.display = "block";
+            document.getElementById("post-part-save-edit").value = button.value;
+            document.getElementById("post-part-cancel-edit").style.display = "block";
+            document.getElementById("post-part-cancel-edit").value = button.value;
+          } else {
+
+            element.remove();
+
+            document.getElementById("visual-post").insertBefore(
+              element,
+              document.getElementById("visual-post").children[
+              selection.value
+              ]
+            );
+
+            if (button.value != selection.value) {
+              document.getElementById("undo-action-post-part").style.display =
+                "block";
+              actionsOnPostPart.push(["M", button.value, selection.value]);
+            }
+          }
+
+          console.log(actionsOnPostPart);
+
+          let executePostPartButtonValue = 0;
+
+          document.querySelectorAll(".post-element-part").forEach((buttonElement) => {
+            buttonElement.querySelector(".execute-on-post-part").value =
+              executePostPartButtonValue;
+            executePostPartButtonValue++;
+          });
+          /////////////////////////////////////////////////////////////////////////////////////////////////////
         });
-        document.getElementById('add-text').addEventListener('click', () => {
 
-            let textElementPart = document.getElementById("text").value;
+        if (runOnce) {
 
-            console.log(textElementPart);
+          runOnce = false;
 
-            textElement.push(textElementPart);
+          buttonSaveEdit.addEventListener("click", () => {
 
-            console.log(textElement);
+            document.getElementById("undo-action-post-part").style.display = "block";
 
-            document.getElementById("text").value = '';
-            document.getElementById("show-multiple-text").innerHTML = textElement;
-        });
+            let oldElement = document.getElementById("visual-post").children[document.getElementById("post-part-save-edit").value].querySelector(".visual-post-element-part").innerHTML;
 
-        document.getElementById('remove-text').addEventListener('click', () => {
-
-            textElement.pop();
-            document.getElementById("show-multiple-text").innerHTML = textElement;
-
-        });
-
-        document.getElementById('add-post-part').addEventListener('click', () => {
+            editedPostPart.push(oldElement);
+            console.log("damn", oldElement)
 
             if (postElementStructureArray[0] == "true") {
-                titleElement = document.getElementById("title").value;
-            };
+              titleElement = document.getElementById("title").value;
+            }
 
             if (postElementStructureArray[1] == "1") {
-                mediaElement = [document.querySelector('input[name="media-type"]:checked').value, identifyLinkType(document.getElementById("media").value)];
-            };
+              mediaElement = [
+                identifyLinkType(document.getElementById("media").value, "type"),
+                identifyLinkType(document.getElementById("media").value, "extract"),
+              ];
+            }
+
+            if (postElementStructureArray[1] == "2") {
+              actionsOnArrayElements(mediaElement, actionsOnMedia);
+              actionsOnMedia = [];
+              removedMedia = [];
+              editedMedia = [];
+            }
 
             if (postElementStructureArray[2] == "1") {
-                textElement = document.getElementById("text").value;
-            };
+              textElement = document.getElementById("text").value;
+            }
 
-            if ((postElementStructureArray[1] == "1" && postElementStructureArray[2] == '1') || postElementStructureArray[1] == "2") {
-                if (document.querySelector('input[name="element-shape"]:checked').value == "null") {
-                    shapeElement = document.getElementById("default-shape").getAttribute("data-null-value");
-                } else {
-                    shapeElement = document.querySelector('input[name="element-shape"]:checked').value;
-                };
-            };
+            if (postElementStructureArray[2] == "2") {
+              actionsOnArrayElements(textElement, actionsOnText);
+              actionsOnText = [];
+              removedText = [];
+              editedText = [];
+            }
+
+            if (
+              (postElementStructureArray[1] == "1" &&
+                postElementStructureArray[2] == "1") ||
+              postElementStructureArray[1] == "2"
+            ) {
+              if (
+                document.querySelector('input[name="element-shape"]:checked')
+                  .value == "null"
+              ) {
+                shapeElement = document
+                  .getElementById("default-shape")
+                  .getAttribute("data-null-value");
+              } else {
+                shapeElement = document.querySelector(
+                  'input[name="element-shape"]:checked'
+                ).value;
+              }
+            }
 
             let postElementPart = {
-                "postElementStructure": postElementStructureArray,
-                "title": titleElement,
-                "media": mediaElement,
-                "text": textElement,
-                "elementShape": shapeElement
+              postElementStructure: postElementStructureArray,
+              title: titleElement,
+              media: mediaElement,
+              text: textElement,
+              elementShape: shapeElement,
             };
 
-            postElement.push(postElementPart);
+            actionsOnPostPart.push(["E", document.getElementById("post-part-save-edit").value, postElementPart]);
 
-            console.log(postElement);
-            console.log(shapeElement)
+            console.log("420", element.querySelector(".execute-on-post-part").value);
+            console.log(shapeElement);
 
             resetPostTools();
 
-        });
+            let outPostElements = "";
 
-        let actionFunction = null;
-        let UIDataMessage;
+            let outTitle = "";
+            let outMedia = "";
+            let outText = "";
+            let videoControls = "";
 
-        let postKey;
-        let postTitle;
-
-        let finalPost;
-
-        function downloadActionUploadDropbox() {
-
-            const apiBaseUrl = 'https://content.dropboxapi.com/2/files';
-
-            const filePath = "/posts.json";
-
-            fetch(`${apiBaseUrl}/download`, {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    'Dropbox-API-Arg': JSON.stringify({
-                        path: filePath,
-                    }),
-                },
-            })
-                .then((response) => response.text())
-                .then((data) => {
-
-                    const jsonData = JSON.parse(data);
-
-                    if (actionFunction == "submitPost") {
-
-                        postKey = document.getElementById("post-json-key").value;
-                        postTitle = document.getElementById("post-title").value;
-                        postAbout = document.getElementById("post-about").value;
-
-                        UIDataMessage = "the '" + postTitle + "' post is now in public!!"
-
-                        finalPost = {
-                            "postTitle": postTitle,
-                            "postAbout": postAbout,
-                            "postElements": postElement,
-                            "time": [moment().format(), null]
-                        };
-
-                        postElement = null;
-
-                        jsonData[postKey] = finalPost;
-
-                    } else if (actionFunction == "deletePost") {
-
-                        console.log(jsonData)
-
-                        alert("are you sure you want to delete the '" + document.getElementById("post-list-to-delete").value + "' post?")
-
-                        delete jsonData[document.getElementById("post-list-to-delete").value]
-
-                        fetchAndAction(loadPostSelection);
-
-                    };
-
-                    fetch(`${apiBaseUrl}/upload`, {
-                        method: 'POST',
-                        headers: {
-                            Authorization: `Bearer ${accessToken}`,
-                            'Content-Type': 'application/octet-stream',
-                            'Dropbox-API-Arg': JSON.stringify({
-                                path: filePath,
-                                mode: { '.tag': 'overwrite' },
-                            }),
-                        },
-                        body: JSON.stringify(jsonData),
-                    })
-                        .then(() => {
-                            document.getElementById("submitMessage").innerHTML = UIDataMessage;
-                            actionFunction = null;
-                        })
-                        .catch((error) => {
-                            console.error('Error saving JSON: ', error);
-                        });
-
-                })
-                .catch((error) => {
-                    console.error('Error reading JSON file: ', error);
-                });
-        };
-
-        document.getElementById('submit-post').addEventListener('click', () => {
-
-            actionFunction = "submitPost";
-
-            downloadActionUploadDropbox();
-
-        });
-
-        function fetchAndAction(funtion) {
-
-            const sharedLink = "https://www.dropbox.com/scl/fi/mrusdrepjd6esr1wt3sxj/posts.json?rlkey=2wgj9ouddf93zhd2u5kxm0wcs&dl=0";
-
-            const directLink = sharedLink.replace("www.dropbox.com", "dl.dropboxusercontent.com");
-
-            fetch(directLink)
-                .then(posts => posts.json())
-                .then((posts) => {
-                    funtion(posts)
-                });
-
-        }
-
-        function loadPostSelection(posts) {
-
-            console.log("the code is working :D")
-
-            let outSelection = "<option value=''>Select a post</option>";
-            console.log(posts.length)
-            for (let i = 0; i < Object.keys(posts).length; i++) {
-                outSelection += "<option value='" + Object.keys(posts)[i] + "'>" + Object.keys(posts)[i] + "</option>";
+            if (postElementPart.postElementStructure[0] === "true") {
+              outTitle =
+                "<div id='post-element-title-holder'><p>" +
+                postElementPart.title +
+                "</p></div>";
             }
-            document.getElementById("post-list-to-edit").innerHTML = outSelection;
-            document.getElementById("post-list-to-delete").innerHTML = outSelection;
 
+            if (postElementPart.postElementStructure[1] === "2") {
+              for (let j = 0; j < postElementPart.media.length; j++) {
+                if (postElementPart.media[j][0] === "I") {
+                  outMedia +=
+                    "<img src='https://i.ibb.co/" +
+                    postElementPart.media[j][1] +
+                    "' id='post-element-image' class='media-item' loading='lazy' style='height: 100px;'>";
+                } else {
+                  outMedia +=
+                    "<iframe id='post-element-video' class='media-item' src='https://www.youtube.com/embed/" +
+                    postElementPart.media[j][1] +
+                    "?rel=0&modestbranding=1' frameborder='0' allowfullscreen></iframe>";
+                }
+              }
+            } else if (postElementPart.postElementStructure[1] === "1") {
+              if (postElementPart.media[0] === "I") {
+                outMedia =
+                  "<img src='https://i.ibb.co/" +
+                  postElementPart.media[1] +
+                  "' id='post-element-image' class='media-item' loading='lazy' style='height: 100px;'>";
+              } else {
+                outMedia =
+                  "<iframe id='post-element-video' class='media-item' src='https://www.youtube.com/embed/" +
+                  postElementPart.media[1] +
+                  "?rel=0&modestbranding=1' frameborder='0' allowfullscreen></iframe>";
+              }
+            }
+
+            if (postElementPart.postElementStructure[2] === "2") {
+              for (let j = 0; j < postElementPart.text.length; j++) {
+                outText += "<p>" + postElementPart.text[j] + "</p>";
+              }
+            } else if (postElementPart.postElementStructure[2] === "1") {
+              outText = "<p>" + postElementPart.text + "</p>";
+            }
+
+            outPostElements += "<div class='data-post-part-object' data-object='" + JSON.stringify(postElementPart) + "'></div>" +
+              outTitle +
+              "<div id='post-element-media-holder'>" +
+              outMedia +
+              "</div><div id='post-element-text-holder'>" +
+              outText;
+
+            document.getElementById("visual-post").children[document.getElementById("post-part-cancel-edit").value].querySelector(".visual-post-element-part").innerHTML = outPostElements;
+
+            document
+              .querySelectorAll(".selection-action-on-post-part")
+              .forEach((selection) => {
+                selection.innerHTML = postPartSelectionOptions;
+              });
+
+          });
+          buttonCancelEdit.addEventListener("click", () => {
+
+            resetPostTools();
+
+            if (postElementStructureArray[1] == "2") {
+              removedMedia = [];
+              editedMedia = [];
+            }
+
+            if (postElementStructureArray[2] == "2") {
+              removedText = [];
+              editedText = [];
+            }
+
+          });
+          document.getElementById("undo-action-post-part").addEventListener("click", () => {
+
+            if (actionsOnPostPart.length <= 1) {
+              document.getElementById("undo-action-post-part").style.display = "none";
+            }
+
+            if (actionsOnPostPart[actionsOnPostPart.length - 1][0] == "R") {
+              document
+                .getElementById("visual-post")
+                .insertBefore(
+                  removedPostPart[removedPostPart.length - 1],
+                  document.getElementById("visual-post").children[
+                  actionsOnPostPart[actionsOnPostPart.length - 1][1]
+                  ]
+                );
+
+              actionsOnPostPart.pop(actionsOnPostPart.length - 1);
+              removedPostPart.pop(removedPostPart.length - 1);
+
+              postPartSelectionOptions +=
+                "<option value='" +
+                multiplePostPartIndex +
+                "'>Move to " +
+                multiplePostPartIndex +
+                "</option>";
+
+              document
+                .querySelectorAll(".selection-action-on-post-part")
+                .forEach((selection) => {
+                  selection.innerHTML = postPartSelectionOptions;
+                });
+
+              multiplePostPartIndex++;
+            } else if (actionsOnPostPart[actionsOnPostPart.length - 1][0] == "E") {
+
+              document.getElementById("visual-post").children[actionsOnPostPart[actionsOnPostPart.length - 1][1]].querySelector(".visual-post-element-part").innerHTML = editedPostPart[editedPostPart.length - 1];
+
+              editedPostPart.pop(editedPostPart.length - 1);
+              actionsOnPostPart.pop(actionsOnPostPart.length - 1);
+            } else {
+              let elementToMoveBack =
+                document.getElementById("visual-post").children[
+                actionsOnPostPart[actionsOnPostPart.length - 1][2]
+                ];
+
+              elementToMoveBack.remove();
+
+              document
+                .getElementById("visual-post")
+                .insertBefore(
+                  elementToMoveBack,
+                  document.getElementById("visual-post").children[
+                  actionsOnPostPart[actionsOnPostPart.length - 1][1]
+                  ]
+                );
+
+              actionsOnPostPart.pop(actionsOnPostPart.length - 1);
+            }
+
+            let executePostPartButtonValue = 0;
+
+            document
+              .querySelectorAll(".execute-on-post-part")
+              .forEach((buttonElement) => {
+                buttonElement.value = executePostPartButtonValue;
+                executePostPartButtonValue++;
+              });
+          });
+        }
+      });
+
+    }
+
+
+
+    let actionFunction = null;
+    let UIDataMessage;
+
+    let postKey;
+    let postTitle;
+    let postAbout;
+    let postCategory;
+
+    let finalPost;
+
+    function downloadActionUploadDropbox() {
+      const apiBaseUrl = "https://content.dropboxapi.com/2/files";
+
+      const filePath = "/posts.json";
+
+      fetch(`${apiBaseUrl}/download`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Dropbox-API-Arg": JSON.stringify({
+            path: filePath,
+          }),
+        },
+      })
+        .then((response) => response.text())
+        .then((data) => {
+          const jsonData = JSON.parse(data);
+
+          if (actionFunction == "submitPost") {
+            postKey = document.getElementById("post-json-key").value;
+            postTitle = document.getElementById("post-title").value;
+            postAbout = document.getElementById("post-about").value;
+            postCategory = getCategoryChecked();
+
+            UIDataMessage = "the '" + postTitle + "' post is now in public!!";
+
+            finalPost = {
+              postTitle: postTitle,
+              postCategory: postCategory,
+              postAbout: postAbout,
+              time: [moment().format(), null],
+              postElements: postElement,
+            };
+
+            postElement = null;
+
+            jsonData[postKey] = finalPost;
+
+          } else if (actionFunction == "editPost") {
+            postKey = document.getElementById("post-json-key").value;
+            postTitle = document.getElementById("post-title").value;
+            postAbout = document.getElementById("post-about").value;
+            postCategory = getCategoryChecked();
+
+            UIDataMessage = "the '" + postTitle + "' post is edited successfuly!!";
+
+            finalPost = {
+              postTitle: postTitle,
+              postCategory: postCategory,
+              postAbout: postAbout,
+              time: [submitTime, moment().format()],
+              postElements: postElement,
+            };
+
+            postElement = null;
+
+            jsonData[postKey] = finalPost;
+
+          } else if (actionFunction == "deletePost") {
+            console.log(jsonData);
+
+            alert(
+              "are you sure you want to delete the '" +
+              document.getElementById("post-list-to-delete").value +
+              "' post?"
+            );
+
+            delete jsonData[
+              document.getElementById("post-list-to-delete").value
+            ];
+
+            fetchAndAction(loadPostSelection);
+          }
+
+          fetch(`${apiBaseUrl}/upload`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/octet-stream",
+              "Dropbox-API-Arg": JSON.stringify({
+                path: filePath,
+                mode: {
+                  ".tag": "overwrite",
+                },
+              }),
+            },
+            body: JSON.stringify(jsonData),
+          })
+            .then(() => {
+              document.getElementById("submitMessage").innerHTML =
+                UIDataMessage;
+              actionFunction = null;
+            })
+            .catch((error) => {
+              console.error("Error saving JSON: ", error);
+            });
+        })
+        .catch((error) => {
+          console.error("Error reading JSON file: ", error);
+        });
+    }
+
+    document.getElementById("submit-post").addEventListener("click", () => {
+      actionFunction = "submitPost";
+
+      downloadActionUploadDropbox();
+    });
+
+    document.getElementById("edit-post").addEventListener("click", () => {
+      actionFunction = "editPost";
+
+      downloadActionUploadDropbox();
+    });
+
+    document.getElementById("save-post").addEventListener("click", () => {
+      postKey = document.getElementById("post-json-key").value;
+      postTitle = document.getElementById("post-title").value;
+      postAbout = document.getElementById("post-about").value;
+      postCategory = getCategoryChecked();
+
+      let postElementCopy = JSON.parse(JSON.stringify(postElement));
+
+      actionsOnArrayElements(postElementCopy, actionsOnPostPart);
+
+      postToSave = {
+        postKey: postKey,
+        postTitle: postTitle,
+        postCategory: postCategory,
+        postAbout: postAbout,
+        postElements: postElementCopy
+      };
+
+      const jsonData = JSON.stringify(postToSave, null, 2);
+
+      const blob = new Blob([jsonData], {
+        type: "application/json",
+      });
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "ZL-saved-post-at-" + moment().format() + ".json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('load-saved-post').addEventListener('click', function () {
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          try {
+            const loadedPostFileContent = JSON.parse(e.target.result);
+
+            resetPostTools()
+
+            console.log(loadedPostFileContent)
+
+            postElement = loadedPostFileContent.postElements;
+
+            document.getElementById("post-json-key").value = loadedPostFileContent.postKey;
+            document.getElementById("post-title").value = loadedPostFileContent.postTitle;
+            document.getElementById("post-about").innerHTML = loadedPostFileContent.postAbout;
+
+            for (let i of loadedPostFileContent.postCategory) {
+              document.getElementById(`category-${i.replace(/ /g, "-")}`).checked = true;
+            }
+
+            buildVisualPost();
+
+            loadFunctionOnExecutePostPart()
+
+          } catch (error) {
+            console.error('Error parsing JSON:', error);
+          }
         };
+        reader.readAsText(file);
+      } else {
+        console.warn('No file selected.');
+      }
 
-        fetchAndAction(loadPostSelection);
+    });
 
-        document.getElementById('show-edit-post').addEventListener('click', () => {
+    let submitTime = null;
 
-            document.getElementById("edit-post-section").style.display = "block";
-            document.getElementById("show-edit-post").style.display = "none";
+    document.getElementById("load-edit-post").addEventListener("click", () => {
+      document.getElementById("edit-post").style.display = "block";
 
+      const postKey = document.getElementById('post-list-to-edit').value;
+
+      const sharedLink = "https://www.dropbox.com/scl/fi/mrusdrepjd6esr1wt3sxj/posts.json?rlkey=2wgj9ouddf93zhd2u5kxm0wcs&dl=0";
+
+      const directLink = sharedLink.replace("www.dropbox.com", "dl.dropboxusercontent.com");
+
+      fetch(directLink)
+        .then(post => post.json())
+        .then((post) => {
+          postElement = post[postKey].postElements;
+
+          document.getElementById("post-json-key").value = postKey;
+          document.getElementById("post-title").value = post[postKey].postTitle;
+          document.getElementById("post-about").innerHTML = post[postKey].postAbout;
+
+          submitTime = post[postKey].time[0];
+
+          for (let i of post[postKey].postCategory) {
+            document.getElementById(`category-${i.replace(/ /g, "-")}`).checked = true;
+          }
+
+          buildVisualPost();
+
+          loadFunctionOnExecutePostPart()
         });
+    });
 
-        document.getElementById('show-delete-post').addEventListener('click', () => {
+    function fetchAndAction(funtion) {
+      const sharedLink =
+        "https://www.dropbox.com/scl/fi/mrusdrepjd6esr1wt3sxj/posts.json?rlkey=2wgj9ouddf93zhd2u5kxm0wcs&dl=0";
 
-            document.getElementById("delete-post-section").style.display = "block";
-            document.getElementById("show-delete-post").style.display = "none";
+      const directLink = sharedLink.replace(
+        "www.dropbox.com",
+        "dl.dropboxusercontent.com"
+      );
 
+      fetch(directLink)
+        .then((posts) => posts.json())
+        .then((posts) => {
+          funtion(posts);
         });
+    }
 
-        document.getElementById('delete-post').addEventListener('click', () => {
+    function loadPostSelection(posts) {
+      let outSelection = "<option value=''>Select a post</option>";
+      console.log(posts.length);
+      for (let i = 0; i < Object.keys(posts).length; i++) {
+        outSelection +=
+          "<option value='" +
+          Object.keys(posts)[i] +
+          "'>" +
+          Object.keys(posts)[i] +
+          "</option>";
+      }
+      document.getElementById("post-list-to-edit").innerHTML = outSelection;
+      document.getElementById("post-list-to-delete").innerHTML = outSelection;
+    }
 
-            actionFunction = "deletePost";
+    fetchAndAction(loadPostSelection);
 
-            downloadActionUploadDropbox();
+    document.getElementById("show-edit-post").addEventListener("click", () => {
+      document.getElementById("edit-post-section").style.display = "block";
+      document.getElementById("show-edit-post").style.display = "none";
+    });
 
-        });
+    document.getElementById("show-delete-post").addEventListener("click", () => {
+      document.getElementById("delete-post-section").style.display = "block";
+      document.getElementById("show-delete-post").style.display = "none";
+    });
 
-    </script>
+    document.getElementById("delete-post").addEventListener("click", () => {
+      actionFunction = "deletePost";
+
+      downloadActionUploadDropbox();
+    });
+
+    let categoryArray = [
+      "test",
+      "game",
+      "abyss of legendary",
+      "project alphabet",
+      "development",
+      "alpha",
+      "beta"
+    ];
+
+    function getCategoryChecked() {
+      let outCategory = [];
+
+      for (var category of categoryArray) {
+        let dataCategory = category.replace(/\s/g, "-");
+
+        let categoryToCheck = document.getElementById(
+          "category-" + dataCategory
+        );
+
+        if (categoryToCheck.checked) {
+          outCategory.push(categoryToCheck.value);
+        }
+      }
+
+      return outCategory;
+    }
+
+    function loadCategorySelection() {
+      let outCategorySection = "";
+
+      for (var category of categoryArray) {
+        let dataCategory = category.replace(/\s/g, "-");
+
+        outCategorySection +=
+          "<div><input type='checkbox' id='category-" +
+          dataCategory +
+          "' name='category-" +
+          dataCategory +
+          "' value='" +
+          category +
+          "'/><label for='category-" +
+          dataCategory +
+          "'>" +
+          category +
+          "</label></div>";
+      }
+
+      document.getElementById("section-category").innerHTML =
+        outCategorySection;
+    }
+
+    loadCategorySelection();
+  </script>
 </body>
 
 </html>
