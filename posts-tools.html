@@ -1918,6 +1918,10 @@
             postAbout = document.getElementById("post-about").value;
             postCategory = getCategoryChecked();
 
+            let postElementCopy = JSON.parse(JSON.stringify(postElement));
+
+            actionsOnArrayElements(postElementCopy, actionsOnPostPart);
+
             UIDataMessage = "the '" + postTitle + "' post is edited successfuly!!";
 
             finalPost = {
