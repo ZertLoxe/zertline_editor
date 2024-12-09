@@ -93,6 +93,13 @@
       <div id="title-tool" style="display: none">
         <p>Title</p>
         <input type="text" id="title" />
+        <p>Title Size</p>
+        <input type="radio" value="big" name="title-size" id="title-size-big" checked />
+        <label for="title-size-big">big</label>
+        <input type="radio" value="medium" name="title-size" id="title-size-medium" />
+        <label for="title-size-medium">medium</label>
+        <input type="radio" value="small" name="title-size" id="title-size-small" />
+        <label for="title-size-small">small</label>
       </div>
       <hr />
       <div id="media-tool" style="display: none">
@@ -141,6 +148,11 @@
           <input type="radio" value="AG" name="element-shape" id="multiple-media-arrow-guide" />
           <label for="multiple-media-arrow-guide">slick slider</label>
         </div>
+      </div>
+      <hr>
+      <div>
+        <input type="checkbox" name="horizontal-rule" id="horizontal-rule" checked />
+        <label for="horizontal-rule">Horizontal rule?</label>
       </div>
       <hr />
       <button type="button" id="add-post-part">Add this post part</button>
@@ -246,6 +258,7 @@
     let mediaElement = null;
     let textElement = null;
     let shapeElement = null;
+    let divider;
     let postPart = [];
 
     function resetPostTools() {
@@ -258,6 +271,7 @@
       mediaElement = null;
       textElement = null;
       shapeElement = null;
+      shapeElement = "";
 
       textSelectionOptions =
         "<option value=''>Select and Action</option><option value='remove'>Remove</option><option value='edit'>Edit</option>";
@@ -274,8 +288,7 @@
       document.getElementById("text-tool").style.display = "none";
       document.getElementById("multiple-text").style.display = "none";
       document.getElementById("special-element-shape").style.display = "none";
-      document.getElementById("single-media-text-shape").style.display =
-        "none";
+      document.getElementById("single-media-text-shape").style.display = "none";
       document.getElementById("multiple-media-shape").style.display = "none";
       document.getElementById("undo-action-media").style.display = "none";
       document.getElementById("undo-action-text").style.display = "none";
@@ -287,6 +300,8 @@
       document.getElementById("post-part-save-edit").style.display = "none";
       document.getElementById("post-part-cancel-edit").style.display = "none";
 
+      document.getElementById("title-size-big").checked = true;
+
       if (
         document.querySelector('input[name="element-shape"]:checked') != null
       ) {
@@ -294,6 +309,8 @@
           'input[name="element-shape"]:checked'
         ).checked = false;
       }
+
+      document.getElementById("horizontal-rule").checked = true;
     }
 
     document.getElementById("post-tool-reveal-create").addEventListener("click", () => {
@@ -1191,6 +1208,16 @@
         document.getElementById("title-tool").style.display = "block";
       }
 
+      console.log("testefication", postPartElement.divider)
+
+      if (postPartElement.divider == "true") {
+        console.log("it is checked")
+        document.getElementById("horizontal-rule").checked = true;
+      } else {
+        console.log("it is not checked")
+        document.getElementById("horizontal-rule").checked = false;
+      };
+
       if (
         postPartElement.postElementStructure[1] == "1" ||
         postPartElement.postElementStructure[1] == "2"
@@ -1234,7 +1261,8 @@
 
       if (postPartElement.postElementStructure[0] == "true") {
         document.getElementById("title-structure-true").checked = true;
-        document.getElementById("title").value = postPartElement.title;
+        document.getElementById("title").value = postPartElement.title[1];
+        document.getElementById(`title-size-${postPartElement.title[0]}`).checked = true;
       } else {
         document.getElementById("title-structure-false").checked = true;
       };
@@ -1395,7 +1423,7 @@
 
     document.getElementById("add-post-part").addEventListener("click", () => {
       if (postElementStructureArray[0] == "true") {
-        titleElement = document.getElementById("title").value;
+        titleElement = [document.querySelector('input[name="title-size"]:checked').value, document.getElementById("title").value];
       }
 
       if (postElementStructureArray[1] == "1") {
@@ -1442,12 +1470,19 @@
         }
       }
 
+      horizontalRule = "false"
+
+      if (document.getElementById("horizontal-rule").checked) {
+        horizontalRule = "true"
+      }
+
       let postElementPart = {
         postElementStructure: postElementStructureArray,
         title: titleElement,
         media: mediaElement,
         text: textElement,
         elementShape: shapeElement,
+        divider: horizontalRule
       };
 
       postElement.push(postElementPart);
@@ -1467,7 +1502,7 @@
       if (postElementPart.postElementStructure[0] === "true") {
         outTitle =
           "<div id='post-element-title-holder'><p>" +
-          postElementPart.title +
+          postElementPart.title[1] + postElementPart.title[0] +
           "</p></div>";
       }
 
@@ -1595,8 +1630,9 @@
             mediaElement = objectOfPostPartToEdit.media
             textElement = objectOfPostPartToEdit.text
             shapeElement = objectOfPostPartToEdit.elementShape
+            horizontalRule = objectOfPostPartToEdit.divider
 
-            console.log(postElementStructureArray, titleElement, mediaElement, textElement, shapeElement)
+            console.log(postElementStructureArray, titleElement, mediaElement, textElement, shapeElement, horizontalRule)
 
             document.getElementById("post-part-save-edit").style.display = "block";
             document.getElementById("post-part-save-edit").value = button.value;
@@ -1646,7 +1682,7 @@
             console.log("damn", oldElement)
 
             if (postElementStructureArray[0] == "true") {
-              titleElement = document.getElementById("title").value;
+              titleElement = [document.querySelector('input[name="title-size"]:checked').value, document.getElementById("title").value];
             }
 
             if (postElementStructureArray[1] == "1") {
@@ -1693,12 +1729,19 @@
               }
             }
 
+            horizontalRule = "false"
+
+            if (document.getElementById("horizontal-rule").checked) {
+              horizontalRule = "true"
+            }
+
             let postElementPart = {
               postElementStructure: postElementStructureArray,
               title: titleElement,
               media: mediaElement,
               text: textElement,
               elementShape: shapeElement,
+              divider: horizontalRule
             };
 
             actionsOnPostPart.push(["E", document.getElementById("post-part-save-edit").value, postElementPart]);
